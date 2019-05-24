@@ -2,14 +2,16 @@
   "name": "create-rwjblue-release-it-setup",
   "version": "0.0.0",
   "description": "Simple npm init / yarn create bin package to add release-it setup used by rwjblue",
+  "keywords": [],
   "repository": "https://github.com/rwjblue/create-rwjblue-release-it-setup",
   "license": "MIT",
   "author": "Robert Jackson <me@rwjblue.com>",
-  "keywords": [],
   "files": [
-    "index.js"
+    "index.js",
+    "bin/"
   ],
   "main": "index.js",
+  "bin": "bin/rwjblue-release-it-setup.js",
   "scripts": {
     "lint:js": "eslint .",
     "test": "qunit"
