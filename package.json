@@ -16,7 +16,10 @@
     "lint:js": "eslint .",
     "test": "qunit tests/**/*-test.js"
   },
-  "dependencies": {},
+  "dependencies": {
+    "execa": "^1.0.0",
+    "sort-package-json": "^1.22.1"
+  },
   "devDependencies": {
     "eslint": "^5.16.0",
     "eslint-config-prettier": "^4.2.0",
