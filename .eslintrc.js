@@ -12,4 +12,12 @@ module.exports = {
   rules: {
     'prettier/prettier': 'error',
   },
+  overrides: [
+    {
+      files: ['tests/**/*.js'],
+      env: {
+        qunit: true,
+      },
+    },
+  ],
 };

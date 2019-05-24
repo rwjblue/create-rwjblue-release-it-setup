@@ -14,7 +14,7 @@
   "bin": "bin/rwjblue-release-it-setup.js",
   "scripts": {
     "lint:js": "eslint .",
-    "test": "qunit"
+    "test": "qunit tests/**/*-test.js"
   },
   "dependencies": {},
   "devDependencies": {
@@ -22,7 +22,9 @@
     "eslint-config-prettier": "^4.2.0",
     "eslint-plugin-node": "^9.0.1",
     "eslint-plugin-prettier": "^3.0.1",
-    "prettier": "^1.17.0"
+    "fixturify-project": "^1.8.1",
+    "prettier": "^1.17.0",
+    "qunit": "^2.9.2"
   },
   "engines": {
     "node": ">= 8"
