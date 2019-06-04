@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 const fs = require('fs');
+const path = require('path');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
 const skipInstall = process.argv.includes('--no-install');
@@ -65,6 +66,14 @@ async function main() {
 
   if (!fs.existsSync('CHANGELOG.md')) {
     fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
+  }
+
+  if (!fs.existsSync('RELEASE.md')) {
+    fs.writeFileSync(
+      'RELEASE.md',
+      fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
+      { encoding: 'utf8' }
+    );
   }
 
   updatePackageJSON();
