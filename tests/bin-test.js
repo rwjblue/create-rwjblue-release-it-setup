@@ -93,5 +93,15 @@ QUnit.module('main binary', function(hooks) {
     );
   });
 
-  QUnit.todo('adds release-it config to package.json', function() {});
+  QUnit.test('adds RELEASE.md to repo', async function(assert) {
+    assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+
+    await execa(BIN_PATH, ['--no-install']);
+
+    assert.strictEqual(
+      fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
+      fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
+      'RELEASE.md was created with the correct contents'
+    );
+  });
 });
