@@ -7,9 +7,10 @@
   "license": "MIT",
   "author": "Robert Jackson <me@rwjblue.com>",
   "files": [
+    "bin/",
     "index.js",
     "labels.json",
-    "bin/"
+    "RELEASE.md"
   ],
   "main": "index.js",
   "bin": "bin/rwjblue-release-it-setup.js",
