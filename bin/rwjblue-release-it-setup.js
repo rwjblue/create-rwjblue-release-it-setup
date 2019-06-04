@@ -5,10 +5,16 @@ const path = require('path');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
 const skipInstall = process.argv.includes('--no-install');
+const skipLabels = process.argv.includes('--no-label-updates');
+const labelsOnly = process.argv.includes('--labels-only');
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
 function updatePackageJSON() {
+  if (labelsOnly) {
+    return;
+  }
+
   let contents = fs.readFileSync('package.json', { encoding: 'utf8' });
   let trailingWhitespace = DETECT_TRAILING_WHITESPACE.exec(contents);
   let pkg = JSON.parse(contents);
@@ -46,7 +52,49 @@ function updatePackageJSON() {
   fs.writeFileSync('package.json', updatedContents, { encoding: 'utf8' });
 }
 
+// from lerna-changelog https://github.com/lerna/lerna-changelog/blob/669a9f23068855f318b5242f9ff7ae0672402311/src/configuration.ts
+function findRepoURL() {
+  if (!fs.existsSync('package.json')) {
+    return;
+  }
+
+  const pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+  if (!pkg.repository) {
+    // no repo, nothing to do
+    return;
+  }
+
+  const url = pkg.repository.url || pkg.repository;
+  const match = url.match(/github\.com[:/]([^./]+\/[^./]+)(?:\.git)?/);
+  if (!match) {
+    return;
+  }
+
+  return match[1];
+}
+
+async function updateLabels() {
+  if (skipLabels) {
+    return;
+  }
+
+  const githubLabelSync = require('github-label-sync');
+
+  let accessToken = process.env.GITHUB_ACCESS_TOKEN;
+  let labels = require('../labels');
+  let repo = findRepoURL();
+
+  await githubLabelSync({
+    accessToken,
+    repo,
+    labels,
+  });
+}
+
 async function installDependencies() {
+  if (labelsOnly || skipInstall) {
+    return;
+  }
   if (fs.existsSync('yarn.lock')) {
     await execa('yarn');
   } else {
@@ -64,11 +112,11 @@ async function main() {
     return;
   }
 
-  if (!fs.existsSync('CHANGELOG.md')) {
+  if (!fs.existsSync('CHANGELOG.md') && !labelsOnly) {
     fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
   }
 
-  if (!fs.existsSync('RELEASE.md')) {
+  if (!fs.existsSync('RELEASE.md') && !labelsOnly) {
     fs.writeFileSync(
       'RELEASE.md',
       fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
@@ -78,9 +126,10 @@ async function main() {
 
   updatePackageJSON();
 
-  if (!skipInstall) {
-    await installDependencies();
-  }
+  await installDependencies();
+
+  // TODO: figure out a decent way to test this part
+  await updateLabels();
 }
 
 main();

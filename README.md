@@ -7,6 +7,8 @@ This will do the following:
 * add `release-it` config to the `package.json`
 * install required dependencies,
 * add a `CHANGELOG.md`
+* add a `RELEASE.md`
+* update your repositories labels with my "go to" defaults
 
 ## Usage
 
@@ -18,6 +20,16 @@ yarn create rwjblue-release-it-setup
 
 # in an npm repo
 npm init rwjblue-release-it-setup
+```
+
+In addition, you can run only the label sync via:
+
+```
+# in a yarn repo
+yarn create rwjblue-release-it-setup --labels-only
+
+# in an npm repo
+npm init rwjblue-release-it-setup --labels-only
 ```
 
 ## License

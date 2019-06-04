@@ -31,7 +31,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.test('adds CHANGELOG.md file', async function(assert) {
     assert.notOk(fs.existsSync('CHANGELOG.md'), 'precond - CHANGELOG.md is not present');
 
-    await execa(BIN_PATH, ['--no-install']);
+    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
 
     assert.ok(fs.existsSync('CHANGELOG.md'), 'CHANGELOG.md is present');
   });
@@ -39,7 +39,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.skip('removes prefix from existing CHANGELOG.md', async function(assert) {
     project.files['CHANGELOG.md'] = `# master\n\n# v1.2.0\n* Foo bar`;
 
-    await execa(BIN_PATH, ['--no-install']);
+    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
 
     assert.strictEqual(
       fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' }),
@@ -51,7 +51,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.test('updates the package.json', async function(assert) {
     let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
-    await execa(BIN_PATH, ['--no-install']);
+    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
 
     let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
     let expected = mergePackageJSON(premodificationPackageJSON, {
@@ -84,7 +84,7 @@ QUnit.module('main binary', function(hooks) {
   });
 
   QUnit.test('installs dependencies', async function(assert) {
-    await execa(BIN_PATH);
+    await execa(BIN_PATH, ['--no-label-updates']);
 
     assert.ok(fs.existsSync('node_modules/release-it'), 'release-it installed');
     assert.ok(
@@ -96,7 +96,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.test('adds RELEASE.md to repo', async function(assert) {
     assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
 
-    await execa(BIN_PATH, ['--no-install']);
+    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
 
     assert.strictEqual(
       fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),

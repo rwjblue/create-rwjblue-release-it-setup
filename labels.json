@@ -1,0 +1,48 @@
+[
+  {
+    "name": "good first issue",
+    "color": "fbca04",
+    "aliases": ["help wanted", "beginner-friendly"]
+  },
+  {
+    "name": "breaking",
+    "color": "fc2929"
+  },
+  {
+    "name": "bug",
+    "color": "fc2929"
+  },
+  {
+    "name": "documentation",
+    "color": "6604b7"
+  },
+  {
+    "name": "duplicate",
+    "color": "666666"
+  },
+  {
+    "name": "enhancement",
+    "color": "0e8a16"
+  },
+  {
+    "name": "invalid",
+    "color": "666666"
+  },
+  {
+    "name": "meta",
+    "color": "000000"
+  },
+  {
+    "name": "question",
+    "color": "cc317c"
+  },
+  {
+    "name": "internal",
+    "color": "1d76db",
+    "aliases": ["refactoring"]
+  },
+  {
+    "name": "wontfix",
+    "color": "ffffff"
+  }
+]
