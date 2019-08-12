@@ -22,7 +22,17 @@ yarn create rwjblue-release-it-setup
 npm init rwjblue-release-it-setup
 ```
 
-In addition, you can run only the label sync via:
+If you'd like to update an existing repo to use the latest and greatest setup, you can run:
+
+```
+# in a yarn repo
+yarn create rwjblue-release-it-setup --update
+
+# in an npm repo
+npm init rwjblue-release-it-setup --update
+```
+
+If you'd like to run only the label sync, you can do that with:
 
 ```
 # in a yarn repo

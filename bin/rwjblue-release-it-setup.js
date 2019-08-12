@@ -7,6 +7,7 @@ const sortPackageJson = require('sort-package-json');
 const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
+const update = process.argv.includes('--update');
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
@@ -114,7 +115,7 @@ async function main() {
       fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
     }
 
-    if (!fs.existsSync('RELEASE.md') && !labelsOnly) {
+    if ((!fs.existsSync('RELEASE.md') || update) && !labelsOnly) {
       fs.writeFileSync(
         'RELEASE.md',
         fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),

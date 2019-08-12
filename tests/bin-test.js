@@ -100,4 +100,22 @@ QUnit.module('main binary', function(hooks) {
       'RELEASE.md was created with the correct contents'
     );
   });
+
+  QUnit.module('--update', function(hooks) {
+    hooks.beforeEach(async function() {
+      await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+    });
+
+    QUnit.test('updates RELEASE.md', async function(assert) {
+      fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
+
+      await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
+
+      assert.strictEqual(
+        fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
+        fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
+        'RELEASE.md has the correct contents'
+      );
+    });
+  });
 });
