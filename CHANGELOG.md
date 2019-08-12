@@ -1,3 +1,11 @@
+## v1.3.0 (2019-08-12)
+
+#### :rocket: Enhancement
+* [#10](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/10) Add --update flag. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
 ## v1.2.0 (2019-08-12)
 
 #### :rocket: Enhancement

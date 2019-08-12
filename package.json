@@ -1,6 +1,6 @@
 {
   "name": "create-rwjblue-release-it-setup",
-  "version": "1.2.0",
+  "version": "1.3.0",
   "description": "Simple npm init / yarn create bin package to add release-it setup used by rwjblue",
   "keywords": [],
   "repository": "https://github.com/rwjblue/create-rwjblue-release-it-setup",
