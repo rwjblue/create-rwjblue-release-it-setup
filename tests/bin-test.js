@@ -11,7 +11,6 @@ QUnit.module('main binary', function(hooks) {
 
   function mergePackageJSON(original, updates) {
     return Object.assign({}, original, updates, {
-      scripts: Object.assign({}, original.scripts, updates.scripts),
       publishConfig: Object.assign({}, original.publishConfig, updates.publishConfig),
       dependencies: Object.assign({}, original.dependencies, updates.dependencies),
       devDependencies: Object.assign({}, original.devDependencies, updates.devDependencies),
@@ -58,9 +57,6 @@ QUnit.module('main binary', function(hooks) {
       devDependencies: {
         'release-it': '^12.2.1',
         'release-it-lerna-changelog': '^1.0.3',
-      },
-      scripts: {
-        release: 'release-it',
       },
       publishConfig: {
         registry: 'https://registry.npmjs.org',
