@@ -103,33 +103,40 @@ async function installDependencies() {
 }
 
 async function main() {
-  if (!fs.existsSync('package.json')) {
+  try {
+    if (!fs.existsSync('package.json')) {
+      /* eslint-disable-next-line no-console */
+      console.error(
+        "create-rwjblue-release-it-setup should be ran from within an existing npm package's root directory"
+      );
+      process.exitCode = 1;
+      return;
+    }
+
+    if (!fs.existsSync('CHANGELOG.md') && !labelsOnly) {
+      fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
+    }
+
+    if (!fs.existsSync('RELEASE.md') && !labelsOnly) {
+      fs.writeFileSync(
+        'RELEASE.md',
+        fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
+        { encoding: 'utf8' }
+      );
+    }
+
+    updatePackageJSON();
+
+    await installDependencies();
+
+    // TODO: figure out a decent way to test this part
+    await updateLabels();
+  } catch (e) {
     /* eslint-disable-next-line no-console */
-    console.error(
-      "create-rwjblue-release-it-setup should be ran from within an existing npm package's root directory"
-    );
-    process.exitCode = 1;
-    return;
+    console.error(e);
+
+    throw e;
   }
-
-  if (!fs.existsSync('CHANGELOG.md') && !labelsOnly) {
-    fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
-  }
-
-  if (!fs.existsSync('RELEASE.md') && !labelsOnly) {
-    fs.writeFileSync(
-      'RELEASE.md',
-      fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
-      { encoding: 'utf8' }
-    );
-  }
-
-  updatePackageJSON();
-
-  await installDependencies();
-
-  // TODO: figure out a decent way to test this part
-  await updateLabels();
 }
 
 main();
