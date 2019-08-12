@@ -23,9 +23,6 @@ function updatePackageJSON() {
   pkg.devDependencies['release-it'] = '^12.2.1';
   pkg.devDependencies['release-it-lerna-changelog'] = '^1.0.3';
 
-  pkg.scripts = pkg.scripts || {};
-  pkg.scripts.release = 'release-it';
-
   pkg['release-it'] = {
     plugins: {
       'release-it-lerna-changelog': {
