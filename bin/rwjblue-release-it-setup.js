@@ -45,11 +45,13 @@ function updatePackageJSON() {
   if (noMerges || noBots) {
     let latestTagExpression = '${latestTag}';
     let noMergesOption = noMerges ? '--no-merges ' : '';
-    let noBotsOption = noBots ? '--perl-regexp --author="^((?!dependabot-preview).*)$" ' : '';
+    // eslint-disable-next-line prettier/prettier, no-useless-escape
+    let noBotsOption = noBots ? '--perl-regexp --author=\"^((?!dependabot-preview).*)$\" ' : '';
 
     pkg[
       'release-it'
-    ].git.changelog = `git log --pretty=format:'* %s (%h)' ${noMergesOption}${noBotsOption}${latestTagExpression}...HEAD`;
+      // eslint-disable-next-line prettier/prettier, no-useless-escape
+    ].git.changelog = `git log --pretty=format:\"* %s (%h)\" ${noMergesOption}${noBotsOption}${latestTagExpression}...HEAD`;
   }
 
   let sortedPkg = sortPackageJson(pkg);
