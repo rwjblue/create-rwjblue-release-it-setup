@@ -8,6 +8,8 @@ const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
 const update = process.argv.includes('--update');
+const noMerges = process.argv.includes('--no-changelog-merges');
+const noBots = process.argv.includes('--no-changelog-dependabot');
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
@@ -39,6 +41,16 @@ function updatePackageJSON() {
   };
   pkg.publishConfig = pkg.publishConfig || {};
   pkg.publishConfig.registry = pkg.publishConfig.registry || 'https://registry.npmjs.org';
+
+  if (noMerges || noBots) {
+    let latestTagExpression = '${latestTag}';
+    let noMergesOption = noMerges ? '--no-merges ' : '';
+    let noBotsOption = noBots ? '--perl-regexp --author="^((?!dependabot-preview).*)$" ' : '';
+
+    pkg[
+      'release-it'
+    ].git.changelog = `git log --pretty=format:'* %s (%h)' ${noMergesOption}${noBotsOption}${latestTagExpression}...HEAD`;
+  }
 
   let sortedPkg = sortPackageJson(pkg);
   let updatedContents = JSON.stringify(sortedPkg, null, 2);

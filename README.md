@@ -4,13 +4,16 @@ Simple npm init / yarn create bin package to add release-it setup used by rwjblu
 
 This will do the following:
 
-* add `release-it` config to the `package.json`
-* install required dependencies,
-* add a `CHANGELOG.md`
-* add a `RELEASE.md`
-* update your repositories labels with my "go to" defaults
+- add `release-it` config to the `package.json`
+- install required dependencies,
+- add a `CHANGELOG.md`
+- add a `RELEASE.md`
+- update your repositories labels with my "go to" defaults
 
 ## Usage
+
+Ensure you have a `GITHUB_ACCESS_TOKEN` environment variable setup. This token needs
+repo access to update labels.
 
 When you want to set up a repo with `release-it`, you can run:
 
@@ -40,6 +43,28 @@ yarn create rwjblue-release-it-setup --labels-only
 
 # in an npm repo
 npm init rwjblue-release-it-setup --labels-only
+```
+
+### Changelog options
+
+If you want to configure your changelog to ignore merge commits, you can use the following option:
+
+```
+# in a yarn repo
+yarn create rwjblue-release-it-setup --no-changelog-merges
+
+# in an npm repo
+npm init rwjblue-release-it-setup --no-changelog-merges
+```
+
+If you want to configure your changelog to ignore dependabot commits, you can use the following option:
+
+```
+# in a yarn repo
+yarn create rwjblue-release-it-setup --no-changelog-dependabot
+
+# in an npm repo
+npm init rwjblue-release-it-setup --no-changelog-dependabot
 ```
 
 ## License
