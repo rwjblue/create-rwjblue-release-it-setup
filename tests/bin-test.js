@@ -69,6 +69,8 @@ QUnit.module('main binary', function(hooks) {
         },
         git: {
           tagName: 'v${version}',
+          changelog:
+            'git log --pretty=format:"* %s (%h)" --perl-regexp --author="^((?!dependabot-preview).*)$" ${latestTag}...HEAD',
         },
         github: {
           release: true,
@@ -83,80 +85,6 @@ QUnit.module('main binary', function(hooks) {
     let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
     await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--no-changelog-merges']);
-
-    let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-    let expected = mergePackageJSON(premodificationPackageJSON, {
-      devDependencies: {
-        'release-it': '^12.2.1',
-        'release-it-lerna-changelog': '^1.0.3',
-      },
-      publishConfig: {
-        registry: 'https://registry.npmjs.org',
-      },
-      'release-it': {
-        plugins: {
-          'release-it-lerna-changelog': {
-            infile: 'CHANGELOG.md',
-          },
-        },
-        git: {
-          tagName: 'v${version}',
-          changelog: 'git log --pretty=format:"* %s (%h)" --no-merges ${latestTag}...HEAD',
-        },
-        github: {
-          release: true,
-        },
-      },
-    });
-
-    assert.deepEqual(pkg, expected);
-  });
-
-  QUnit.test('updates the changelog entry to ignore dependabot commits', async function(assert) {
-    let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
-    await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--no-changelog-dependabot']);
-
-    let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-    let expected = mergePackageJSON(premodificationPackageJSON, {
-      devDependencies: {
-        'release-it': '^12.2.1',
-        'release-it-lerna-changelog': '^1.0.3',
-      },
-      publishConfig: {
-        registry: 'https://registry.npmjs.org',
-      },
-      'release-it': {
-        plugins: {
-          'release-it-lerna-changelog': {
-            infile: 'CHANGELOG.md',
-          },
-        },
-        git: {
-          tagName: 'v${version}',
-          changelog:
-            'git log --pretty=format:"* %s (%h)" --perl-regexp --author="^((?!dependabot-preview).*)$" ${latestTag}...HEAD',
-        },
-        github: {
-          release: true,
-        },
-      },
-    });
-
-    assert.deepEqual(pkg, expected);
-  });
-
-  QUnit.test('updates the changelog entry to ignore merge and dependabot commits', async function(
-    assert
-  ) {
-    let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
-    await execa(BIN_PATH, [
-      '--no-install',
-      '--no-label-updates',
-      '--no-changelog-merges',
-      '--no-changelog-dependabot',
-    ]);
 
     let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
     let expected = mergePackageJSON(premodificationPackageJSON, {

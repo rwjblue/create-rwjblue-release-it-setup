@@ -9,7 +9,6 @@ const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
 const update = process.argv.includes('--update');
 const noMerges = process.argv.includes('--no-changelog-merges');
-const noBots = process.argv.includes('--no-changelog-dependabot');
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
@@ -21,6 +20,9 @@ function updatePackageJSON() {
   let contents = fs.readFileSync('package.json', { encoding: 'utf8' });
   let trailingWhitespace = DETECT_TRAILING_WHITESPACE.exec(contents);
   let pkg = JSON.parse(contents);
+  let changelog =
+    // eslint-disable-next-line prettier/prettier, no-useless-escape
+    'git log --pretty=format:\"* %s (%h)\" --perl-regexp --author=\"^((?!dependabot-preview).*)$\" ${latestTag}...HEAD';
 
   pkg.devDependencies = pkg.devDependencies || {};
   pkg.devDependencies['release-it'] = '^12.2.1';
@@ -34,6 +36,7 @@ function updatePackageJSON() {
     },
     git: {
       tagName: 'v${version}',
+      changelog,
     },
     github: {
       release: true,
@@ -42,17 +45,15 @@ function updatePackageJSON() {
   pkg.publishConfig = pkg.publishConfig || {};
   pkg.publishConfig.registry = pkg.publishConfig.registry || 'https://registry.npmjs.org';
 
-  if (noMerges || noBots) {
+  if (noMerges) {
     let latestTagExpression = '${latestTag}';
     let noMergesOption = noMerges ? '--no-merges ' : '';
-    // eslint-disable-next-line prettier/prettier, no-useless-escape
-    let noBotsOption = noBots ? '--perl-regexp --author=\"^((?!dependabot-preview).*)$\" ' : '';
 
-    pkg[
-      'release-it'
-      // eslint-disable-next-line prettier/prettier, no-useless-escape
-    ].git.changelog = `git log --pretty=format:\"* %s (%h)\" ${noMergesOption}${noBotsOption}${latestTagExpression}...HEAD`;
+    // eslint-disable-next-line prettier/prettier, no-useless-escape
+    changelog = `git log --pretty=format:\"* %s (%h)\" ${noMergesOption}--perl-regexp --author=\"^((?!dependabot-preview).*)$\" ${latestTagExpression}...HEAD`;
   }
+
+  pkg['release-it'].git.changelog = changelog;
 
   let sortedPkg = sortPackageJson(pkg);
   let updatedContents = JSON.stringify(sortedPkg, null, 2);
