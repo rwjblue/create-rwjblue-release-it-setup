@@ -91,6 +91,12 @@ async function updateLabels() {
     return;
   }
 
+  if (!process.env.GITHUB_ACCESS_TOKEN) {
+    throw new Error(
+      'You must set a GITHUB_ACCESS_TOKEN environment variable. The token must have repo access.'
+    );
+  }
+
   const githubLabelSync = require('github-label-sync');
 
   let accessToken = process.env.GITHUB_ACCESS_TOKEN;
