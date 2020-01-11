@@ -57,16 +57,6 @@ yarn create rwjblue-release-it-setup --no-changelog-merges
 npm init rwjblue-release-it-setup --no-changelog-merges
 ```
 
-If you want to configure your changelog to ignore dependabot commits, you can use the following option:
-
-```
-# in a yarn repo
-yarn create rwjblue-release-it-setup --no-changelog-dependabot
-
-# in an npm repo
-npm init rwjblue-release-it-setup --no-changelog-dependabot
-```
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE.md).
