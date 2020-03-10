@@ -72,6 +72,7 @@ QUnit.module('main binary', function(hooks) {
         },
         github: {
           release: true,
+          tokenRef: 'GITHUB_AUTH',
         },
       },
     });
