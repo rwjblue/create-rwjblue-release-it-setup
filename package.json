@@ -36,7 +36,7 @@
     "release-it-lerna-changelog": "^1.0.3"
   },
   "engines": {
-    "node": ">= 8"
+    "node": ">= 10"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
