@@ -35,6 +35,7 @@ function updatePackageJSON() {
     },
     github: {
       release: true,
+      tokenRef: "GITHUB_AUTH",
     },
   };
   pkg.publishConfig = pkg.publishConfig || {};
