@@ -18,6 +18,13 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
+"@financial-times/origami-service-makefile@^6.0.1":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@financial-times/origami-service-makefile/-/origami-service-makefile-6.4.0.tgz#6613380a5870a80c5b233a6584fec2e931c6d51f"
+  integrity sha512-BAta9ElfKENOO+WTLNxmFu75uO+bImxXt20YWsHJTGEg4VzKTUMjXv77yDx5uc8mLJVuEiGNXJvNg2XMWxxT1Q==
+  dependencies:
+    esm "^3.0.18"
+
 "@iarna/toml@2.2.3":
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/@iarna/toml/-/toml-2.2.3.tgz#f060bf6eaafae4d56a7dac618980838b0696e2ab"
@@ -337,6 +344,11 @@ before-after-hook@^1.4.0:
   version "1.4.0"
   resolved "https://registry.yarnpkg.com/before-after-hook/-/before-after-hook-1.4.0.tgz#2b6bf23dca4f32e628fd2747c10a37c74a4b484d"
   integrity sha512-l5r9ir56nda3qu14nAXIlyq1MmUSs0meCIaFAh8HwkFwP1F8eToOuS3ah2VAHHcY04jaYD7FpJC5JTXHYRbkzg==
+
+bluebird@^3.5.0:
+  version "3.7.2"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.2.tgz#9f229c15be272454ffa973ace0dbee79a1b0c36f"
+  integrity sha512-XpNj6GDQzdfW+r2Wnn7xiSAd7TM3jzkxGXBGTtWKuSXv1xUV+azxAm8jdWZN06QTQk+2N2XB9jRDkvbmQmcRtg==
 
 bluebird@^3.5.3:
   version "3.5.5"
@@ -791,11 +803,6 @@ decompress-response@^3.2.0, decompress-response@^3.3.0:
   dependencies:
     mimic-response "^1.0.0"
 
-deep-extend@^0.4.1:
-  version "0.4.2"
-  resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.4.2.tgz#48b699c27e334bf89f10892be432f6e4c7d34a7f"
-  integrity sha1-SLaZwn4zS/ifEIkr5DL25MfTSn8=
-
 deep-extend@^0.6.0:
   version "0.6.0"
   resolved "https://registry.yarnpkg.com/deep-extend/-/deep-extend-0.6.0.tgz#c4fa7c95404a17a9c3e8ca7e1537312b736330ac"
@@ -1091,6 +1098,11 @@ eslint@^5.16.0:
     strip-json-comments "^2.0.1"
     table "^5.2.3"
     text-table "^0.2.0"
+
+esm@^3.0.18:
+  version "3.2.25"
+  resolved "https://registry.yarnpkg.com/esm/-/esm-3.2.25.tgz#342c18c29d56157688ba5ce31f8431fbb795cc10"
+  integrity sha512-U1suiZ2oDVWv4zPO56S0NcR5QriEahGtdN2OR6FiOG4WJvcjBVFB0qI4+eKoWFH483PKGuLuu6V8Z4T5g63UVA==
 
 espree@^5.0.1:
   version "5.0.1"
@@ -1476,15 +1488,16 @@ git-url-parse@11.1.2:
     git-up "^4.0.0"
 
 github-label-sync@^1.3.0:
-  version "1.3.0"
-  resolved "https://registry.yarnpkg.com/github-label-sync/-/github-label-sync-1.3.0.tgz#8469b28c2a8151f6f15b293aebcbdd73bf8c4a6c"
-  integrity sha1-hGmyjCqBUfbxWyk668vdc7+MSmw=
+  version "1.4.2"
+  resolved "https://registry.yarnpkg.com/github-label-sync/-/github-label-sync-1.4.2.tgz#a6e1b3abbec17dc743a27e95606dcb97087035b0"
+  integrity sha512-z1Xnd8Wp+WatkypEhsRwM1dK4BkAVbO8nSbCen6COluDW/MMIM6R/QfQHTaKzIPKESIHRStEvlRHuobtL1KE2A==
   dependencies:
+    "@financial-times/origami-service-makefile" "^6.0.1"
     chalk "^1"
     commander "^2"
     got "^7.1.0"
-    node.extend "^1"
-    octonode "~0.7"
+    node.extend "^2.0.2"
+    octonode "^0.9.5"
 
 glob-parent@^3.1.0:
   version "3.1.0"
@@ -2565,10 +2578,10 @@ node-watch@0.6.0:
   resolved "https://registry.yarnpkg.com/node-watch/-/node-watch-0.6.0.tgz#ab0703b60cd270783698e57a428faa0010ed8fd0"
   integrity sha512-XAgTL05z75ptd7JSVejH1a2Dm1zmXYhuDr9l230Qk6Z7/7GPcnAs/UyJJ4ggsXSvWil8iOzwQLW0zuGUvHpG8g==
 
-node.extend@^1:
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/node.extend/-/node.extend-1.1.8.tgz#0aab3e63789f4e6d68b42bc00073ad1881243cf0"
-  integrity sha512-L/dvEBwyg3UowwqOUTyDsGBU6kjBQOpOhshio9V3i3BMPv5YUb9+mWNN8MK0IbWqT0AqaTSONZf0aTuMMahWgA==
+node.extend@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/node.extend/-/node.extend-2.0.2.tgz#b4404525494acc99740f3703c496b7d5182cc6cc"
+  integrity sha512-pDT4Dchl94/+kkgdwyS2PauDFjZG0Hk0IcHIB+LkW27HLDtdoeMxHTxZh39DYbPP8UflWXWj9JcdDozF+YDOpQ==
   dependencies:
     has "^1.0.3"
     is "^3.2.1"
@@ -2638,12 +2651,13 @@ octokit-pagination-methods@^1.1.0:
   resolved "https://registry.yarnpkg.com/octokit-pagination-methods/-/octokit-pagination-methods-1.1.0.tgz#cf472edc9d551055f9ef73f6e42b4dbb4c80bea4"
   integrity sha512-fZ4qZdQ2nxJvtcasX7Ghl+WlWS/d9IgnBIwFZXVNNZUmzpno91SX5bc5vuxiuKoCtK78XxGGNuSCrDC7xYB3OQ==
 
-octonode@~0.7:
-  version "0.7.13"
-  resolved "https://registry.yarnpkg.com/octonode/-/octonode-0.7.13.tgz#d66cb26b9efefc4089e0df8830a6efab73976cad"
-  integrity sha1-1myya57+/ECJ4N+IMKbvq3OXbK0=
+octonode@^0.9.5:
+  version "0.9.5"
+  resolved "https://registry.yarnpkg.com/octonode/-/octonode-0.9.5.tgz#0237ea289a2d6642068f6383a420bf97cfca993e"
+  integrity sha512-l+aX9jNVkaagh7u/q2QpNKdL8XUagdztl+ebXxBRU6FJ1tpRxAH/ygIuWh0h7eS491BsyH6bb0QZIQEC2+u5oA==
   dependencies:
-    deep-extend "^0.4.1"
+    bluebird "^3.5.0"
+    deep-extend "^0.6.0"
     randomstring "^1.1.5"
     request "^2.72.0"
 
