@@ -103,11 +103,16 @@ async function updateLabels() {
   });
 }
 
+function isYarn() {
+  return fs.existsSync('yarn.lock');
+}
+
 async function installDependencies() {
   if (labelsOnly || skipInstall) {
     return;
   }
-  if (fs.existsSync('yarn.lock')) {
+
+  if (isYarn()) {
     await execa('yarn');
   } else {
     await execa('npm', ['install']);
@@ -130,9 +135,15 @@ async function main() {
     }
 
     if ((!fs.existsSync('RELEASE.md') || update) && !labelsOnly) {
+      let releaseContents = fs.readFileSync(path.join(__dirname, '..', 'release-template.md'), {
+        encoding: 'utf8',
+      });
+
+      let dependencyInstallReplacementValue = isYarn() ? 'yarn install' : 'npm install';
+
       fs.writeFileSync(
         'RELEASE.md',
-        fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
+        releaseContents.replace('{{INSTALL_DEPENDENCIES}}', dependencyInstallReplacementValue),
         { encoding: 'utf8' }
       );
     }

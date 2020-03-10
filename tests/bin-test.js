@@ -93,33 +93,72 @@ QUnit.module('main binary', function(hooks) {
     );
   });
 
-  QUnit.test('adds RELEASE.md to repo', async function(assert) {
-    assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+  QUnit.module('RELEASE.md', function() {
+    function expectedReleaseContents(isYarn) {
+      let releaseContents = fs.readFileSync(path.join(__dirname, '..', 'release-template.md'), {
+        encoding: 'utf8',
+      });
 
-    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+      let dependencyInstallReplacementValue = isYarn ? 'yarn install' : 'npm install';
 
-    assert.strictEqual(
-      fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-      fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
-      'RELEASE.md was created with the correct contents'
-    );
-  });
+      return releaseContents.replace('{{INSTALL_DEPENDENCIES}}', dependencyInstallReplacementValue);
+    }
 
-  QUnit.module('--update', function(hooks) {
-    hooks.beforeEach(async function() {
+    QUnit.test('adds RELEASE.md to repo when no yarn.lock exists', async function(assert) {
+      assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+
       await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
-    });
-
-    QUnit.test('updates RELEASE.md', async function(assert) {
-      fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
-
-      await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
 
       assert.strictEqual(
         fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-        fs.readFileSync(path.join(__dirname, '..', 'RELEASE.md'), { encoding: 'utf8' }),
-        'RELEASE.md has the correct contents'
+        expectedReleaseContents(false),
+        'RELEASE.md was created with the correct contents'
       );
+    });
+
+    QUnit.test('adds RELEASE.md to repo when yarn.lock exists', async function(assert) {
+      fs.writeFileSync('yarn.lock', '', { encoding: 'utf-8' });
+
+      assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+
+      await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+
+      assert.strictEqual(
+        fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
+        expectedReleaseContents(true),
+        'RELEASE.md was created with the correct contents'
+      );
+    });
+
+    QUnit.module('--update', function(hooks) {
+      hooks.beforeEach(async function() {
+        await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+      });
+
+      QUnit.test('updates RELEASE.md when yarn.lock exists', async function(assert) {
+        fs.writeFileSync('yarn.lock', '', { encoding: 'utf-8' });
+        fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
+
+        await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
+
+        assert.strictEqual(
+          fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
+          expectedReleaseContents(true),
+          'RELEASE.md has the correct contents'
+        );
+      });
+
+      QUnit.test('updates RELEASE.md when no yarn.lock exists', async function(assert) {
+        fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
+
+        await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
+
+        assert.strictEqual(
+          fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
+          expectedReleaseContents(false),
+          'RELEASE.md has the correct contents'
+        );
+      });
     });
   });
 });
