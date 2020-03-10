@@ -1,3 +1,21 @@
+## v2.0.0 (2020-03-10)
+
+#### :boom: Breaking Change
+* [#16](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/16) Drop Node 8 support. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#28](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/28) Enable `release-it-lerna-changelog`s `launchEditor` feature. ([@rwjblue](https://github.com/rwjblue))
+* [#27](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/27) Ensure generated devDependencies match those used for testing. ([@rwjblue](https://github.com/rwjblue))
+* [#18](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/18) Update dependencies / devDependencies to latest. ([@rwjblue](https://github.com/rwjblue))
+* [#17](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/17) Ensure label sync uses same token as release-it and lerna-changelog. ([@rwjblue](https://github.com/rwjblue))
+* [#15](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/15) Use the same GitHub access token for both `release-it` and `lerna-changelog` ([@jelhan](https://github.com/jelhan))
+
+#### Committers: 3
+- Jeldrik Hanschke ([@jelhan](https://github.com/jelhan))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Robert Wagner ([@rwwagner90](https://github.com/rwwagner90))
+
+
 ## v1.3.0 (2019-08-12)
 
 #### :rocket: Enhancement
