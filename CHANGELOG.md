@@ -1,3 +1,12 @@
+## v2.1.0 (2020-03-10)
+
+#### :rocket: Enhancement
+* [#29](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/29) Ensure `RELEASE.md` mentions `yarn install` or `npm install` appropriately. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.0.0 (2020-03-10)
 
 #### :boom: Breaking Change
