@@ -9,6 +9,18 @@ const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
 const update = process.argv.includes('--update');
 
+const RELEASE_IT_VERSION = (() => {
+  let pkg = require('../package');
+
+  return pkg.devDependencies['release-it'];
+})();
+
+const RELEASE_IT_LERNA_CHANGELOG_VERSION = (() => {
+  let pkg = require('../package');
+
+  return pkg.devDependencies['release-it-lerna-changelog'];
+})();
+
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
 function updatePackageJSON() {
@@ -21,8 +33,8 @@ function updatePackageJSON() {
   let pkg = JSON.parse(contents);
 
   pkg.devDependencies = pkg.devDependencies || {};
-  pkg.devDependencies['release-it'] = '^12.2.1';
-  pkg.devDependencies['release-it-lerna-changelog'] = '^1.0.3';
+  pkg.devDependencies['release-it'] = RELEASE_IT_VERSION;
+  pkg.devDependencies['release-it-lerna-changelog'] = RELEASE_IT_LERNA_CHANGELOG_VERSION;
 
   pkg['release-it'] = {
     plugins: {

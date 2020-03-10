@@ -55,8 +55,10 @@ QUnit.module('main binary', function(hooks) {
     let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
     let expected = mergePackageJSON(premodificationPackageJSON, {
       devDependencies: {
-        'release-it': '^12.2.1',
-        'release-it-lerna-changelog': '^1.0.3',
+        'release-it': require('../package').devDependencies['release-it'],
+        'release-it-lerna-changelog': require('../package').devDependencies[
+          'release-it-lerna-changelog'
+        ],
       },
       publishConfig: {
         registry: 'https://registry.npmjs.org',
