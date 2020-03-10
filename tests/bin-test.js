@@ -67,6 +67,7 @@ QUnit.module('main binary', function(hooks) {
         plugins: {
           'release-it-lerna-changelog': {
             infile: 'CHANGELOG.md',
+            launchEditor: true,
           },
         },
         git: {

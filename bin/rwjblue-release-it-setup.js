@@ -40,6 +40,7 @@ function updatePackageJSON() {
     plugins: {
       'release-it-lerna-changelog': {
         infile: 'CHANGELOG.md',
+        launchEditor: true,
       },
     },
     git: {
