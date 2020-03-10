@@ -79,7 +79,7 @@ async function updateLabels() {
 
   const githubLabelSync = require('github-label-sync');
 
-  let accessToken = process.env.GITHUB_ACCESS_TOKEN;
+  let accessToken = process.env.GITHUB_AUTH;
   let labels = require('../labels');
   let repo = findRepoURL();
 
