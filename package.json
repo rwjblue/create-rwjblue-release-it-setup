@@ -10,7 +10,7 @@
     "bin/",
     "index.js",
     "labels.json",
-    "RELEASE.md"
+    "release-template.md"
   ],
   "main": "index.js",
   "bin": "bin/rwjblue-release-it-setup.js",
