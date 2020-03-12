@@ -1,3 +1,12 @@
+## v2.1.1 (2020-03-12)
+
+#### :bug: Bug Fix
+* [#30](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/30) Ensure release-template.md is published with the project. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.1.0 (2020-03-10)
 
 #### :rocket: Enhancement
