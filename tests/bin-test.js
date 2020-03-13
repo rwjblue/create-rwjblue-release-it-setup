@@ -166,16 +166,17 @@ QUnit.module('main binary', function(hooks) {
 
 QUnit.module('unit', function() {
   QUnit.module('findRepoURL', function() {
-    function confirmResult(pkg, expected) {
-      QUnit.test(`${expected} from ${JSON.stringify(pkg)}`, function(assert) {
-        assert.strictEqual(BinScript.findRepoURL(pkg), expected);
+    [
+      ['https://github.com/rwjblue/foo', 'rwjblue/foo'],
+      ['https://github.com/rwjblue/foo.git', 'rwjblue/foo'],
+      ['https://github.com/rwjblue/foo.js.git', 'rwjblue/foo.js'],
+      ['git@github.com:rwjblue/foo.git', 'rwjblue/foo'],
+      ['git@github.com:rwjblue/foo.js.git', 'rwjblue/foo.js'],
+    ].forEach(([source, expected]) => {
+      QUnit.test(`${source} -> ${expected}`, function(assert) {
+        assert.strictEqual(BinScript.findRepoURL({ repository: source }), expected);
+        assert.strictEqual(BinScript.findRepoURL({ repository: { url: source } }), expected);
       });
-    }
-
-    confirmResult({ repository: 'https://github.com/rwjblue/foo' }, 'rwjblue/foo');
-    confirmResult({ repository: 'https://github.com/rwjblue/foo.git' }, 'rwjblue/foo');
-    confirmResult({ repository: 'https://github.com/rwjblue/foo.js.git' }, 'rwjblue/foo.js');
-    confirmResult({ repository: 'ssh://github.com:rwjblue/foo.git' }, 'rwjblue/foo');
-    confirmResult({ repository: 'ssh://github.com:rwjblue/foo.js.git' }, 'rwjblue/foo.js');
+    });
   });
 });
