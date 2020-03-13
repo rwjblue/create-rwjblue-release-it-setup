@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
+const getRepoInfoFromURL = require('hosted-git-info').fromUrl;
 const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
@@ -62,30 +63,26 @@ function updatePackageJSON() {
   }
 
   fs.writeFileSync('package.json', updatedContents, { encoding: 'utf8' });
+
+  return sortedPkg;
 }
 
-// from lerna-changelog https://github.com/lerna/lerna-changelog/blob/669a9f23068855f318b5242f9ff7ae0672402311/src/configuration.ts
-function findRepoURL() {
-  if (!fs.existsSync('package.json')) {
-    return;
-  }
-
-  const pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+function findRepoURL(pkg) {
   if (!pkg.repository) {
     // no repo, nothing to do
     return;
   }
 
   const url = pkg.repository.url || pkg.repository;
-  const match = url.match(/github\.com[:/]([^./]+\/[^./]+)(?:\.git)?/);
-  if (!match) {
+  const repoInfo = getRepoInfoFromURL(url);
+  if (repoInfo === undefined || repoInfo === null || repoInfo.type !== 'github') {
     return;
   }
 
-  return match[1];
+  return `${repoInfo.user}/${repoInfo.project}`;
 }
 
-async function updateLabels() {
+async function updateLabels(pkg) {
   if (skipLabels) {
     return;
   }
@@ -94,7 +91,7 @@ async function updateLabels() {
 
   let accessToken = process.env.GITHUB_AUTH;
   let labels = require('../labels');
-  let repo = findRepoURL();
+  let repo = findRepoURL(pkg);
 
   await githubLabelSync({
     accessToken,
@@ -148,12 +145,12 @@ async function main() {
       );
     }
 
-    updatePackageJSON();
+    let pkg = updatePackageJSON();
 
     await installDependencies();
 
     // TODO: figure out a decent way to test this part
-    await updateLabels();
+    await updateLabels(pkg);
   } catch (e) {
     /* eslint-disable-next-line no-console */
     console.error(e);
@@ -162,4 +159,10 @@ async function main() {
   }
 }
 
-main();
+module.exports = {
+  findRepoURL,
+};
+
+if (require.main === module) {
+  main();
+}
