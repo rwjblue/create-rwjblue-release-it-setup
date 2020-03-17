@@ -91,6 +91,79 @@ QUnit.module('main binary', function(hooks) {
       assert.deepEqual(pkg, expected);
     });
 
+    QUnit.test('does not remove existing release-it configuration', async function(assert) {
+      project.pkg['release-it'] = {
+        hooks: {
+          'after:bump': 'npm run something',
+        },
+        plugins: {
+          'release-it-lerna-changelog': {
+            launchEditor: false,
+          },
+        },
+        git: {
+          'some-other': 'prop',
+        },
+      };
+      project.writeSync();
+
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+
+      assert.deepEqual(
+        premodificationPackageJSON['release-it'],
+        {
+          hooks: {
+            'after:bump': 'npm run something',
+          },
+          plugins: {
+            'release-it-lerna-changelog': {
+              launchEditor: false,
+            },
+          },
+          git: {
+            'some-other': 'prop',
+          },
+        },
+        'precond - release-it contents exist initially'
+      );
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': require('../package').devDependencies['release-it'],
+          'release-it-lerna-changelog': require('../package').devDependencies[
+            'release-it-lerna-changelog'
+          ],
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          hooks: {
+            'after:bump': 'npm run something',
+          },
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: false,
+            },
+          },
+          git: {
+            tagName: 'v${version}',
+            'some-other': 'prop',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
+          },
+        },
+      });
+
+      assert.deepEqual(pkg, expected);
+    });
+
     QUnit.test('does not update devDependencies if release-it range is greater', async function(
       assert
     ) {

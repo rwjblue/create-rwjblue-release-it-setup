@@ -72,21 +72,31 @@ function updatePackageJSON() {
     RELEASE_IT_LERNA_CHANGELOG_VERSION
   );
 
-  pkg['release-it'] = {
-    plugins: {
-      'release-it-lerna-changelog': {
-        infile: 'CHANGELOG.md',
-        launchEditor: true,
-      },
+  let releaseItConfig = pkg['release-it'] || {};
+  pkg['release-it'] = releaseItConfig;
+
+  releaseItConfig.plugins = releaseItConfig.plugins || {};
+  releaseItConfig.plugins['release-it-lerna-changelog'] = Object.assign(
+    {
+      infile: 'CHANGELOG.md',
+      launchEditor: true,
     },
-    git: {
+    releaseItConfig.plugins['release-it-lerna-changelog']
+  );
+  releaseItConfig.git = Object.assign(
+    {
       tagName: 'v${version}',
     },
-    github: {
+    releaseItConfig.git
+  );
+  releaseItConfig.github = Object.assign(
+    {
       release: true,
       tokenRef: 'GITHUB_AUTH',
     },
-  };
+    releaseItConfig.github
+  );
+
   pkg.publishConfig = pkg.publishConfig || {};
   pkg.publishConfig.registry = pkg.publishConfig.registry || 'https://registry.npmjs.org';
 
