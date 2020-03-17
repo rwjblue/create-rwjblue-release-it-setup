@@ -97,6 +97,7 @@ async function updateLabels(pkg) {
     accessToken,
     repo,
     labels,
+    allowAddedLabels: true,
   });
 }
 
