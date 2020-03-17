@@ -52,50 +52,135 @@ QUnit.module('main binary', function(hooks) {
     );
   });
 
-  QUnit.test('updates the package.json', async function(assert) {
-    let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+  QUnit.module('package.json', function() {
+    QUnit.test('adds release-it configuration and devDependencies to package.json', async function(
+      assert
+    ) {
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
-    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+      await exec(['--no-install', '--no-label-updates']);
 
-    let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-    let expected = mergePackageJSON(premodificationPackageJSON, {
-      devDependencies: {
-        'release-it': require('../package').devDependencies['release-it'],
-        'release-it-lerna-changelog': require('../package').devDependencies[
-          'release-it-lerna-changelog'
-        ],
-      },
-      publishConfig: {
-        registry: 'https://registry.npmjs.org',
-      },
-      'release-it': {
-        plugins: {
-          'release-it-lerna-changelog': {
-            infile: 'CHANGELOG.md',
-            launchEditor: true,
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': require('../package').devDependencies['release-it'],
+          'release-it-lerna-changelog': require('../package').devDependencies[
+            'release-it-lerna-changelog'
+          ],
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: true,
+            },
+          },
+          git: {
+            tagName: 'v${version}',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
           },
         },
-        git: {
-          tagName: 'v${version}',
-        },
-        github: {
-          release: true,
-          tokenRef: 'GITHUB_AUTH',
-        },
-      },
+      });
+
+      assert.deepEqual(pkg, expected);
     });
 
-    assert.deepEqual(pkg, expected);
-  });
+    QUnit.test('does not update devDependencies if release-it range is greater', async function(
+      assert
+    ) {
+      project.addDevDependency('release-it', '^13.2.0');
+      project.writeSync();
 
-  QUnit.test('installs dependencies', async function(assert) {
-    await execa(BIN_PATH, ['--no-label-updates']);
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
-    assert.ok(fs.existsSync('node_modules/release-it'), 'release-it installed');
-    assert.ok(
-      fs.existsSync('node_modules/release-it-lerna-changelog'),
-      'release-it-lerna-changelog installed'
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': '^13.2.0',
+          'release-it-lerna-changelog': require('../package').devDependencies[
+            'release-it-lerna-changelog'
+          ],
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: true,
+            },
+          },
+          git: {
+            tagName: 'v${version}',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
+          },
+        },
+      });
+
+      assert.deepEqual(pkg, expected);
+    });
+
+    QUnit.test(
+      'does not update devDependencies if release-it-lerna-changelog range is greater',
+      async function(assert) {
+        project.addDevDependency('release-it-lerna-changelog', '^3.0.0');
+        project.writeSync();
+
+        let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+
+        await exec(['--no-install', '--no-label-updates']);
+
+        let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+        let expected = mergePackageJSON(premodificationPackageJSON, {
+          devDependencies: {
+            'release-it': require('../package').devDependencies['release-it'],
+            'release-it-lerna-changelog': '^3.0.0',
+          },
+          publishConfig: {
+            registry: 'https://registry.npmjs.org',
+          },
+          'release-it': {
+            plugins: {
+              'release-it-lerna-changelog': {
+                infile: 'CHANGELOG.md',
+                launchEditor: true,
+              },
+            },
+            git: {
+              tagName: 'v${version}',
+            },
+            github: {
+              release: true,
+              tokenRef: 'GITHUB_AUTH',
+            },
+          },
+        });
+
+        assert.deepEqual(pkg, expected);
+      }
     );
+
+    QUnit.test('installs dependencies', async function(assert) {
+      await exec(['--no-label-updates']);
+
+      assert.ok(fs.existsSync('node_modules/release-it'), 'release-it installed');
+      assert.ok(
+        fs.existsSync('node_modules/release-it-lerna-changelog'),
+        'release-it-lerna-changelog installed'
+      );
+    });
   });
 
   QUnit.module('RELEASE.md', function() {
@@ -180,6 +265,19 @@ QUnit.module('unit', function() {
       QUnit.test(`${source} -> ${expected}`, function(assert) {
         assert.strictEqual(BinScript.findRepoURL({ repository: source }), expected);
         assert.strictEqual(BinScript.findRepoURL({ repository: { url: source } }), expected);
+      });
+    });
+  });
+
+  QUnit.module('getDependencyRange', function() {
+    [
+      { theirs: '1.0.0', ours: '^2.0.0', expected: '^2.0.0' },
+      { theirs: '^3.0.0', ours: '^2.0.0', expected: '^3.0.0' },
+      { theirs: 'github:foo/bar', ours: '^2.0.0', expected: 'github:foo/bar' },
+      { theirs: 'foo/bar', ours: '^2.0.0', expected: 'foo/bar' },
+    ].forEach(({ theirs, ours, expected }) => {
+      QUnit.test(`${theirs},${ours} -> ${expected}`, function(assert) {
+        assert.strictEqual(BinScript.getDependencyRange(theirs, ours), expected);
       });
     });
   });

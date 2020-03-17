@@ -5,6 +5,7 @@ const path = require('path');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
 const getRepoInfoFromURL = require('hosted-git-info').fromUrl;
+const semver = require('semver');
 const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
@@ -24,6 +25,34 @@ const RELEASE_IT_LERNA_CHANGELOG_VERSION = (() => {
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
+function getDependencyRange(theirs, ours) {
+  if (theirs) {
+    let ourRange = new semver.Range(ours);
+    let ourMinimumVersion = ourRange.set[0][0].semver.version;
+
+    let theirMinimumVersion;
+    try {
+      let theirRange = new semver.Range(theirs);
+      theirMinimumVersion = theirRange.set[0][0].semver.version;
+    } catch (error) {
+      // handle github:foo/a#bar
+      if (error.message.startsWith('Invalid comparator')) {
+        // if it is invalid, but not missing, theirs should be preserved
+        return theirs;
+      } else {
+        throw error;
+      }
+    }
+
+    // pre-existing version is newer, do nothing
+    if (semver.gt(theirMinimumVersion, ourMinimumVersion)) {
+      return theirs;
+    }
+  }
+
+  return ours;
+}
+
 function updatePackageJSON() {
   if (labelsOnly) {
     return;
@@ -34,8 +63,14 @@ function updatePackageJSON() {
   let pkg = JSON.parse(contents);
 
   pkg.devDependencies = pkg.devDependencies || {};
-  pkg.devDependencies['release-it'] = RELEASE_IT_VERSION;
-  pkg.devDependencies['release-it-lerna-changelog'] = RELEASE_IT_LERNA_CHANGELOG_VERSION;
+  pkg.devDependencies['release-it'] = getDependencyRange(
+    pkg.devDependencies['release-it'],
+    RELEASE_IT_VERSION
+  );
+  pkg.devDependencies['release-it-lerna-changelog'] = getDependencyRange(
+    pkg.devDependencies['release-it-lerna-changelog'],
+    RELEASE_IT_LERNA_CHANGELOG_VERSION
+  );
 
   pkg['release-it'] = {
     plugins: {
@@ -161,6 +196,7 @@ async function main() {
 
 module.exports = {
   findRepoURL,
+  getDependencyRange,
 };
 
 if (require.main === module) {
