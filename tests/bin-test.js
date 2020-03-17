@@ -1,6 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 const Project = require('fixturify-project');
+const BinScript = require('../bin/rwjblue-release-it-setup');
 const execa = require('execa');
 
 const BIN_PATH = require.resolve('../bin/rwjblue-release-it-setup');
@@ -160,5 +161,21 @@ QUnit.module('main binary', function(hooks) {
         );
       });
     });
+  });
+});
+
+QUnit.module('unit', function() {
+  QUnit.module('findRepoURL', function() {
+    function confirmResult(pkg, expected) {
+      QUnit.test(`${expected} from ${JSON.stringify(pkg)}`, function(assert) {
+        assert.strictEqual(BinScript.findRepoURL(pkg), expected);
+      });
+    }
+
+    confirmResult({ repository: 'https://github.com/rwjblue/foo' }, 'rwjblue/foo');
+    confirmResult({ repository: 'https://github.com/rwjblue/foo.git' }, 'rwjblue/foo');
+    confirmResult({ repository: 'https://github.com/rwjblue/foo.js.git' }, 'rwjblue/foo.js');
+    confirmResult({ repository: 'ssh://github.com:rwjblue/foo.git' }, 'rwjblue/foo');
+    confirmResult({ repository: 'ssh://github.com:rwjblue/foo.js.git' }, 'rwjblue/foo.js');
   });
 });

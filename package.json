@@ -6,14 +6,14 @@
   "repository": "https://github.com/rwjblue/create-rwjblue-release-it-setup",
   "license": "MIT",
   "author": "Robert Jackson <me@rwjblue.com>",
+  "main": "index.js",
+  "bin": "bin/rwjblue-release-it-setup.js",
   "files": [
     "bin/",
     "index.js",
     "labels.json",
     "release-template.md"
   ],
-  "main": "index.js",
-  "bin": "bin/rwjblue-release-it-setup.js",
   "scripts": {
     "lint:js": "eslint .",
     "release": "release-it",
@@ -22,6 +22,7 @@
   "dependencies": {
     "execa": "^4.0.0",
     "github-label-sync": "^1.4.2",
+    "hosted-git-info": "^3.0.4",
     "sort-package-json": "^1.40.0"
   },
   "devDependencies": {
