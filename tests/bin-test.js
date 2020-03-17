@@ -7,6 +7,10 @@ const execa = require('execa');
 const BIN_PATH = require.resolve('../bin/rwjblue-release-it-setup');
 const ROOT = process.cwd();
 
+function exec(args) {
+  return execa(process.execPath, ['--unhandled-rejections=strict', BIN_PATH, ...args]);
+}
+
 QUnit.module('main binary', function(hooks) {
   let project;
 
@@ -31,7 +35,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.test('adds CHANGELOG.md file', async function(assert) {
     assert.notOk(fs.existsSync('CHANGELOG.md'), 'precond - CHANGELOG.md is not present');
 
-    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+    await exec(['--no-install', '--no-label-updates']);
 
     assert.ok(fs.existsSync('CHANGELOG.md'), 'CHANGELOG.md is present');
   });
@@ -39,7 +43,7 @@ QUnit.module('main binary', function(hooks) {
   QUnit.skip('removes prefix from existing CHANGELOG.md', async function(assert) {
     project.files['CHANGELOG.md'] = `# master\n\n# v1.2.0\n* Foo bar`;
 
-    await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+    await exec(['--no-install', '--no-label-updates']);
 
     assert.strictEqual(
       fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' }),
@@ -108,7 +112,7 @@ QUnit.module('main binary', function(hooks) {
     QUnit.test('adds RELEASE.md to repo when no yarn.lock exists', async function(assert) {
       assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
 
-      await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+      await exec(['--no-install', '--no-label-updates']);
 
       assert.strictEqual(
         fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
@@ -122,7 +126,7 @@ QUnit.module('main binary', function(hooks) {
 
       assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
 
-      await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+      await exec(['--no-install', '--no-label-updates']);
 
       assert.strictEqual(
         fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
@@ -133,14 +137,14 @@ QUnit.module('main binary', function(hooks) {
 
     QUnit.module('--update', function(hooks) {
       hooks.beforeEach(async function() {
-        await execa(BIN_PATH, ['--no-install', '--no-label-updates']);
+        await exec(['--no-install', '--no-label-updates']);
       });
 
       QUnit.test('updates RELEASE.md when yarn.lock exists', async function(assert) {
         fs.writeFileSync('yarn.lock', '', { encoding: 'utf-8' });
         fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
 
-        await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
+        await exec(['--no-install', '--no-label-updates', '--update']);
 
         assert.strictEqual(
           fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
@@ -152,7 +156,7 @@ QUnit.module('main binary', function(hooks) {
       QUnit.test('updates RELEASE.md when no yarn.lock exists', async function(assert) {
         fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
 
-        await execa(BIN_PATH, ['--no-install', '--no-label-updates', '--update']);
+        await exec(['--no-install', '--no-label-updates', '--update']);
 
         assert.strictEqual(
           fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
