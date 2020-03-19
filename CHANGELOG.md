@@ -1,3 +1,19 @@
+## v2.2.0 (2020-03-19)
+
+#### :rocket: Enhancement
+* [#38](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/38) Update release-it-lerna-changelog minimum version. Ensures changelog presented _before_ version selection is from `lerna-changelog`. ([@rwjblue](https://github.com/rwjblue))
+
+#### :bug: Bug Fix
+* [#37](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/37) Ensure existing `release-it` config is preserved. ([@rwjblue](https://github.com/rwjblue))
+* [#36](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/36) Avoid downgrading release-it / release-it-lerna-changelog. ([@rwjblue](https://github.com/rwjblue))
+* [#35](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/35) Avoid deleting existing GitHub labels when adding new ones. ([@rwjblue](https://github.com/rwjblue))
+* [#32](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/32) Correctly parse repo information. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.1.1 (2020-03-12)
 
 #### :bug: Bug Fix
