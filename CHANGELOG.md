@@ -1,3 +1,13 @@
+## v2.2.1 (2020-03-23)
+
+#### :bug: Bug Fix
+* [#42](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/42) Fixes bug in logic with --labels-only ([@scalvert](https://github.com/scalvert))
+
+#### Committers: 2
+- Steve Calvert ([@scalvert](https://github.com/scalvert))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.2.0 (2020-03-19)
 
 #### :rocket: Enhancement
