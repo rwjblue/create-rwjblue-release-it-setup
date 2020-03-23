@@ -54,13 +54,13 @@ function getDependencyRange(theirs, ours) {
 }
 
 function updatePackageJSON() {
-  if (labelsOnly) {
-    return;
-  }
-
   let contents = fs.readFileSync('package.json', { encoding: 'utf8' });
   let trailingWhitespace = DETECT_TRAILING_WHITESPACE.exec(contents);
   let pkg = JSON.parse(contents);
+
+  if (labelsOnly) {
+    return pkg;
+  }
 
   pkg.devDependencies = pkg.devDependencies || {};
   pkg.devDependencies['release-it'] = getDependencyRange(
