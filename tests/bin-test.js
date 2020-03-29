@@ -91,6 +91,51 @@ QUnit.module('main binary', function (hooks) {
       assert.deepEqual(pkg, expected);
     });
 
+    QUnit.test('adds release-it configuration for monoreposa to package.json', async function (
+      assert
+    ) {
+      project.pkg.workspaces = ['packages/*'];
+      project.writeSync();
+
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': require('../package').devDependencies['release-it'],
+          'release-it-lerna-changelog': require('../package').devDependencies[
+            'release-it-lerna-changelog'
+          ],
+          'release-it-yarn-workspaces': require('../package').devDependencies[
+            'release-it-yarn-workspaces'
+          ],
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: true,
+            },
+            'release-it-yarn-workspaces': true,
+          },
+          git: {
+            tagName: 'v${version}',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
+          },
+        },
+      });
+
+      assert.deepEqual(pkg, expected);
+    });
+
     QUnit.test('does not remove existing release-it configuration', async function (assert) {
       project.pkg['release-it'] = {
         hooks: {

@@ -23,6 +23,12 @@ const RELEASE_IT_LERNA_CHANGELOG_VERSION = (() => {
   return pkg.devDependencies['release-it-lerna-changelog'];
 })();
 
+const RELEASE_IT_YARN_WORKSPACES_VERSION = (() => {
+  let pkg = require('../package');
+
+  return pkg.devDependencies['release-it-yarn-workspaces'];
+})();
+
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
 
 function getDependencyRange(theirs, ours) {
@@ -57,6 +63,7 @@ function updatePackageJSON() {
   let contents = fs.readFileSync('package.json', { encoding: 'utf8' });
   let trailingWhitespace = DETECT_TRAILING_WHITESPACE.exec(contents);
   let pkg = JSON.parse(contents);
+  let hasWorkspaces = !!pkg.workspaces;
 
   if (labelsOnly) {
     return pkg;
@@ -72,6 +79,13 @@ function updatePackageJSON() {
     RELEASE_IT_LERNA_CHANGELOG_VERSION
   );
 
+  if (hasWorkspaces) {
+    pkg.devDependencies['release-it-yarn-workspaces'] = getDependencyRange(
+      pkg.devDependencies['release-it-yarn-workspaces'],
+      RELEASE_IT_YARN_WORKSPACES_VERSION
+    );
+  }
+
   let releaseItConfig = pkg['release-it'] || {};
   pkg['release-it'] = releaseItConfig;
 
@@ -83,6 +97,10 @@ function updatePackageJSON() {
     },
     releaseItConfig.plugins['release-it-lerna-changelog']
   );
+  if (hasWorkspaces && releaseItConfig.plugins['release-it-yarn-workspaces'] !== false) {
+    releaseItConfig.plugins['release-it-yarn-workspaces'] = true;
+  }
+
   releaseItConfig.git = Object.assign(
     {
       tagName: 'v${version}',
