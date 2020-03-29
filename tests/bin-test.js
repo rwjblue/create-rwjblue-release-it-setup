@@ -212,7 +212,7 @@ QUnit.module('main binary', function (hooks) {
     QUnit.test('does not update devDependencies if release-it range is greater', async function (
       assert
     ) {
-      project.addDevDependency('release-it', '^13.2.0');
+      project.addDevDependency('release-it', '^999.999.999');
       project.writeSync();
 
       let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
@@ -222,7 +222,7 @@ QUnit.module('main binary', function (hooks) {
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
       let expected = mergePackageJSON(premodificationPackageJSON, {
         devDependencies: {
-          'release-it': '^13.2.0',
+          'release-it': '^999.999.999',
           'release-it-lerna-changelog': require('../package').devDependencies[
             'release-it-lerna-changelog'
           ],
