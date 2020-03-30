@@ -97,6 +97,7 @@ function updatePackageJSON() {
     },
     releaseItConfig.plugins['release-it-lerna-changelog']
   );
+
   if (hasWorkspaces && releaseItConfig.plugins['release-it-yarn-workspaces'] !== false) {
     releaseItConfig.plugins['release-it-yarn-workspaces'] = true;
   }
@@ -114,6 +115,10 @@ function updatePackageJSON() {
     },
     releaseItConfig.github
   );
+
+  if (pkg.private && !('npm' in releaseItConfig)) {
+    releaseItConfig.npm = false;
+  }
 
   pkg.publishConfig = pkg.publishConfig || {};
   pkg.publishConfig.registry = pkg.publishConfig.registry || 'https://registry.npmjs.org';
