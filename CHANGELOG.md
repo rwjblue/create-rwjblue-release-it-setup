@@ -1,3 +1,12 @@
+## v2.5.0 (2020-03-30)
+
+#### :rocket: Enhancement
+* [#52](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/52) Add release-it config to disable npm for private packages. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.4.0 (2020-03-30)
 
 #### :rocket: Enhancement
