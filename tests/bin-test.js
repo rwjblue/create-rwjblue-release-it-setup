@@ -91,7 +91,47 @@ QUnit.module('main binary', function (hooks) {
       assert.deepEqual(pkg, expected);
     });
 
-    QUnit.test('adds release-it configuration for monoreposa to package.json', async function (
+    QUnit.test('adds npm: false when package is marked as private', async function (assert) {
+      project.pkg.private = true;
+      project.writeSync();
+
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': require('../package').devDependencies['release-it'],
+          'release-it-lerna-changelog': require('../package').devDependencies[
+            'release-it-lerna-changelog'
+          ],
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: true,
+            },
+          },
+          git: {
+            tagName: 'v${version}',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
+          },
+          npm: false,
+        },
+      });
+
+      assert.deepEqual(pkg, expected);
+    });
+
+    QUnit.test('adds release-it configuration for monorepos to package.json', async function (
       assert
     ) {
       project.pkg.workspaces = ['packages/*'];
