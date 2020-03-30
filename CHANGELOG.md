@@ -1,3 +1,18 @@
+## v2.3.0 (2020-03-30)
+
+#### :rocket: Enhancement
+* [#47](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/47) Bump release-it to 13.3.2 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+* [#49](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/49) Bump release-it-lerna-changelog to 2.1.2 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+* [#48](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/48) Add release-it-yarn-workspaces when ran within a monorepo. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#43](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/43) Update prettier to 2.0. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.2.1 (2020-03-23)
 
 #### :bug: Bug Fix
