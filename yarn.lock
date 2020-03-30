@@ -107,7 +107,7 @@
   resolved "https://registry.yarnpkg.com/@octokit/plugin-request-log/-/plugin-request-log-1.0.0.tgz#eef87a431300f6148c39a7f75f8cfeb218b2547e"
   integrity sha512-ywoxP68aOT3zHCLgWZgwUJatiENeHE7xJzYjfz8WI0goynp96wETBF+d95b8g/uL4QmS6owPVlaxiz3wyMAzcw==
 
-"@octokit/plugin-rest-endpoint-methods@^3.3.0":
+"@octokit/plugin-rest-endpoint-methods@3.4.0", "@octokit/plugin-rest-endpoint-methods@^3.3.0":
   version "3.4.0"
   resolved "https://registry.yarnpkg.com/@octokit/plugin-rest-endpoint-methods/-/plugin-rest-endpoint-methods-3.4.0.tgz#27b1dac7fba4d0d6e488967919b6a5bd3595ffbc"
   integrity sha512-Tvctk0u5SVrSLAzi8SLo0KrLSBl5biAHBgWy3L65vsbO/2fjzr62HVkoDPyr+WRT+eHhhqpKAERF3dQWOIUOvQ==
@@ -147,6 +147,16 @@
     "@octokit/plugin-paginate-rest" "^2.0.0"
     "@octokit/plugin-request-log" "^1.0.0"
     "@octokit/plugin-rest-endpoint-methods" "^3.3.0"
+
+"@octokit/rest@17.1.4":
+  version "17.1.4"
+  resolved "https://registry.yarnpkg.com/@octokit/rest/-/rest-17.1.4.tgz#b03eb97635de62b48428f998ad1cb9244edd2d10"
+  integrity sha512-LGghhepxoXyvi7ew0OdedrlwXQog8gvTbcdXoQ6RDKnzoYW2rBpcqeWC4fTuPUp9K0UEykcMix8kFnQ5b+64JQ==
+  dependencies:
+    "@octokit/core" "^2.4.3"
+    "@octokit/plugin-paginate-rest" "^2.0.0"
+    "@octokit/plugin-request-log" "^1.0.0"
+    "@octokit/plugin-rest-endpoint-methods" "3.4.0"
 
 "@octokit/types@^2.0.0", "@octokit/types@^2.0.1":
   version "2.3.1"
@@ -2851,10 +2861,10 @@ release-it-lerna-changelog@^2.1.2:
     release-it "^13.3.2"
     tmp "^0.1.0"
 
-release-it-yarn-workspaces@^1.0.2:
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/release-it-yarn-workspaces/-/release-it-yarn-workspaces-1.0.2.tgz#011ef318adb2145c0605636fe17dc847e028ace2"
-  integrity sha512-1naW1SqBc2/t7w5HBA8bkQ1xfYZ+ZuSk+DiyWvDsHpddWv75cQgzPfrCCa2dEqieumlLsWpLSf2DysnJEmwkNA==
+release-it-yarn-workspaces@^1.1.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/release-it-yarn-workspaces/-/release-it-yarn-workspaces-1.1.0.tgz#f8826bca078436fd31e099c166826f3cd7f0bf15"
+  integrity sha512-K9xjHrKfhch3mFDBIJHSxDNPnCaBDRePstRLJF6fgzJCgt0m/UlVOrfTh3mJu2FwOyzHR5R84R2HEpYpz3sTgQ==
   dependencies:
     detect-indent "^6.0.0"
     detect-newline "^3.1.0"
@@ -2863,13 +2873,13 @@ release-it-yarn-workspaces@^1.0.2:
     url-join "^4.0.1"
     walk-sync "^2.0.2"
 
-release-it@^13.3.2:
-  version "13.3.2"
-  resolved "https://registry.yarnpkg.com/release-it/-/release-it-13.3.2.tgz#18c69e709f541b654e1523a7fe3d972aac26968c"
-  integrity sha512-ktGgXpOqYpvwlL07IeIbYYFom4cIlYF+xHvDwV5HsxcLSBpFtCeGcTPhBl4ZgP4rSwiioQiDOdLJBku+1Lm3MQ==
+release-it@^13.3.2, release-it@^13.5.0:
+  version "13.5.0"
+  resolved "https://registry.yarnpkg.com/release-it/-/release-it-13.5.0.tgz#716ec42c4c06ae1b5f7c667466aa62b3c645faaf"
+  integrity sha512-jArSTUaGzQiWjEUCwWG5chNmE1xNTaI9HQQhPPIJfzk+cL6KvT5MwRkaUQeJbTkrqlB5UjIM9sF35OMndEUuUA==
   dependencies:
     "@iarna/toml" "2.2.3"
-    "@octokit/rest" "17.1.2"
+    "@octokit/rest" "17.1.4"
     async-retry "1.3.1"
     chalk "3.0.0"
     cosmiconfig "6.0.0"
@@ -2898,7 +2908,7 @@ release-it@^13.3.2:
     uuid "7.0.2"
     window-size "1.1.1"
     yaml "1.8.3"
-    yargs-parser "18.1.1"
+    yargs-parser "18.1.2"
 
 request@^2.72.0:
   version "2.88.2"
@@ -3679,18 +3689,18 @@ yargs-parser@18.1.1:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@^13.1.1:
-  version "13.1.1"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.1.tgz#d26058532aa06d365fe091f6a1fc06b2f7e5eca0"
-  integrity sha512-oVAVsHz6uFrg3XQheFII8ESO2ssAf9luWuAd6Wexsu4F3OtIW0o8IribPXYrD4WC24LWtPrJlGy87y5udK+dxQ==
+yargs-parser@18.1.2, yargs-parser@^18.1.0:
+  version "18.1.2"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.2.tgz#2f482bea2136dbde0861683abea7756d30b504f1"
+  integrity sha512-hlIPNR3IzC1YuL1c2UwwDKpXlNFBqD1Fswwh1khz5+d8Cq/8yc/Mn0i+rQXduu8hcrFKvO7Eryk+09NecTQAAQ==
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
 
-yargs-parser@^18.1.0:
-  version "18.1.2"
-  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-18.1.2.tgz#2f482bea2136dbde0861683abea7756d30b504f1"
-  integrity sha512-hlIPNR3IzC1YuL1c2UwwDKpXlNFBqD1Fswwh1khz5+d8Cq/8yc/Mn0i+rQXduu8hcrFKvO7Eryk+09NecTQAAQ==
+yargs-parser@^13.1.1:
+  version "13.1.1"
+  resolved "https://registry.yarnpkg.com/yargs-parser/-/yargs-parser-13.1.1.tgz#d26058532aa06d365fe091f6a1fc06b2f7e5eca0"
+  integrity sha512-oVAVsHz6uFrg3XQheFII8ESO2ssAf9luWuAd6Wexsu4F3OtIW0o8IribPXYrD4WC24LWtPrJlGy87y5udK+dxQ==
   dependencies:
     camelcase "^5.0.0"
     decamelize "^1.2.0"
