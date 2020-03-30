@@ -1,3 +1,12 @@
+## v2.4.0 (2020-03-30)
+
+#### :rocket: Enhancement
+* [#51](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/51) Update release-it-yarn-workspaces to prompt for access control with scoped packages (if needed). ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.3.0 (2020-03-30)
 
 #### :rocket: Enhancement
