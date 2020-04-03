@@ -1,9 +1,9 @@
+## v2.6.0 (2020-04-03)
+
 #### :rocket: Enhancement
 
 * Upgrade release-it-yarn-workspaces to 1.3.0
 * Update release-it to 13.5.1
-
-
 
 ## v2.5.0 (2020-03-30)
 
