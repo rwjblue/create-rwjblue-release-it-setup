@@ -1,3 +1,14 @@
+## v2.7.0 (2020-04-28)
+
+#### :rocket: Enhancement
+* [#77](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/77) Update release-it-yarn-workspaces to 1.4.0. ([@rwjblue](https://github.com/rwjblue))
+* [#75](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/75) Bump release-it-lerna-changelog from 2.2.0 to 2.3.0 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.6.0 (2020-04-03)
 
 #### :rocket: Enhancement
