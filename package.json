@@ -24,7 +24,7 @@
     "github-label-sync": "^1.4.6",
     "hosted-git-info": "^3.0.4",
     "semver": "^7.3.2",
-    "sort-package-json": "^1.42.1"
+    "sort-package-json": "^1.42.2"
   },
   "devDependencies": {
     "eslint": "^6.8.0",
