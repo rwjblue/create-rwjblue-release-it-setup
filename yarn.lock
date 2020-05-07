@@ -1434,10 +1434,10 @@ git-url-parse@11.1.2:
   dependencies:
     git-up "^4.0.0"
 
-github-label-sync@^1.4.6:
-  version "1.4.6"
-  resolved "https://registry.yarnpkg.com/github-label-sync/-/github-label-sync-1.4.6.tgz#17131bef3a8fb559ed7dac5e0a66e5a1db90d996"
-  integrity sha512-5T+2B41nnfIxJhjPN8c30SQcu+YK5QtwqvWFi++mYNhckHIZye9bvsJEd9Pc4GVMoqZDd+AHJ3p53G07PHOgFg==
+github-label-sync@^1.5.0:
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/github-label-sync/-/github-label-sync-1.5.0.tgz#b5a566177f1adfcee17f251aa67dfc04d4471e3a"
+  integrity sha512-jbt1tHBLtJNzMtVWEFXo05gXij9zlAPaAh6/5kOEKOzXI6FGyBMT3p/myYOLqwBsPX3QJyT5MjLfEsvzWrw4rw==
   dependencies:
     "@financial-times/origami-service-makefile" "^6.0.1"
     chalk "^1"
