@@ -42,6 +42,23 @@ describe('main binary', function () {
 
   describe('package.json', function () {
     it('adds repository info when discoverable from `.git/config`', async function () {
+      project.files['.git'] = {
+        config: `
+[core]
+  repositoryformatversion = 0
+  filemode = true
+  bare = false
+  logallrefupdates = true
+  ignorecase = true
+  precomposeunicode = true
+
+[remote "origin"]
+  url = git@github.com:someuser/some-repo.git
+  fetch = +refs/heads/*:refs/remotes/origin/*`,
+      };
+
+      project.writeSync();
+
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
@@ -72,6 +89,10 @@ describe('main binary', function () {
                 "launchEditor": true,
               },
             },
+          },
+          "repository": Object {
+            "type": "git",
+            "url": "git@github.com:someuser/some-repo.git",
           },
           "version": "0.1.0",
         }
@@ -425,6 +446,7 @@ describe('unit', function () {
       ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
       ${'rwjblue/foo'}                           | ${'rwjblue/foo'}
       ${'rwjblue/foo.js'}                        | ${'rwjblue/foo.js'}
+      ${''}                                      | ${undefined}
     `('$source -> $expected', ({ source, expected }) => {
       expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
       expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
