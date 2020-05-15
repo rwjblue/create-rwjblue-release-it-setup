@@ -141,7 +141,8 @@ function findRepoURL(pkg) {
     return;
   }
 
-  const url = pkg.repository.url || pkg.repository;
+  // see https://docs.npmjs.com/configuring-npm/package-json#repository for valid formats
+  const url = typeof pkg.repository === 'string' ? pkg.repository : pkg.repository.url;
   const repoInfo = getRepoInfoFromURL(url);
   if (repoInfo === undefined || repoInfo === null || repoInfo.type !== 'github') {
     return;
