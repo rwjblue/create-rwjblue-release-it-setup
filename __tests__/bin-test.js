@@ -385,17 +385,16 @@ describe('main binary', function () {
 
 describe('unit', function () {
   describe('findRepoURL', function () {
-    [
-      ['https://github.com/rwjblue/foo', 'rwjblue/foo'],
-      ['https://github.com/rwjblue/foo.git', 'rwjblue/foo'],
-      ['https://github.com/rwjblue/foo.js.git', 'rwjblue/foo.js'],
-      ['git@github.com:rwjblue/foo.git', 'rwjblue/foo'],
-      ['git@github.com:rwjblue/foo.js.git', 'rwjblue/foo.js'],
-    ].forEach(([source, expected]) => {
-      it(`${source} -> ${expected}`, function () {
-        expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
-        expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
-      });
+    it.each`
+      input                                      | expected
+      ${'https://github.com/rwjblue/foo'}        | ${'rwjblue/foo'}
+      ${'https://github.com/rwjblue/foo.git'}    | ${'rwjblue/foo'}
+      ${'https://github.com/rwjblue/foo.js.git'} | ${'rwjblue/foo.js'}
+      ${'git@github.com:rwjblue/foo.git'}        | ${'rwjblue/foo'}
+      ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
+    `('$source -> $expected', ({ source, expected }) => {
+      expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
+      expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
     });
   });
 
