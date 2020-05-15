@@ -14,14 +14,6 @@ function exec(args) {
 describe('main binary', function () {
   let project;
 
-  function mergePackageJSON(original, updates) {
-    return Object.assign({}, original, updates, {
-      publishConfig: Object.assign({}, original.publishConfig, updates.publishConfig),
-      dependencies: Object.assign({}, original.dependencies, updates.dependencies),
-      devDependencies: Object.assign({}, original.devDependencies, updates.devDependencies),
-    });
-  }
-
   beforeEach(function () {
     project = new Project('some-thing-cool', '0.1.0');
     project.writeSync();
@@ -49,123 +41,186 @@ describe('main binary', function () {
   });
 
   describe('package.json', function () {
-    it('adds release-it configuration and devDependencies to package.json', async function () {
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+    it('adds repository info when discoverable from `.git/config`', async function () {
+      project.files['.git'] = {
+        config: `
+[core]
+  repositoryformatversion = 0
+  filemode = true
+  bare = false
+  logallrefupdates = true
+  ignorecase = true
+  precomposeunicode = true
+
+[remote "origin"]
+  url = git@github.com:someuser/some-repo.git
+  fetch = +refs/heads/*:refs/remotes/origin/*`,
+      };
+
+      project.writeSync();
 
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': require('../package').devDependencies['release-it'],
-          'release-it-lerna-changelog': require('../package').devDependencies[
-            'release-it-lerna-changelog'
-          ],
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: true,
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^2.3.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
             },
           },
-          git: {
-            tagName: 'v${version}',
+          "repository": Object {
+            "type": "git",
+            "url": "git@github.com:someuser/some-repo.git",
           },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-        },
-      });
+          "version": "0.1.0",
+        }
+      `);
+    });
 
-      expect(pkg).toEqual(expected);
+    it('adds release-it configuration and devDependencies to package.json', async function () {
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^2.3.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
+            },
+          },
+          "version": "0.1.0",
+        }
+      `);
     });
 
     it('adds npm: false when package is marked as private', async function () {
       project.pkg.private = true;
       project.writeSync();
 
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': require('../package').devDependencies['release-it'],
-          'release-it-lerna-changelog': require('../package').devDependencies[
-            'release-it-lerna-changelog'
-          ],
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: true,
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^2.3.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "private": true,
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "npm": false,
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
             },
           },
-          git: {
-            tagName: 'v${version}',
-          },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-          npm: false,
-        },
-      });
-
-      expect(pkg).toEqual(expected);
+          "version": "0.1.0",
+        }
+      `);
     });
 
     it('adds release-it configuration for monorepos to package.json', async function () {
       project.pkg.workspaces = ['packages/*'];
       project.writeSync();
 
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': require('../package').devDependencies['release-it'],
-          'release-it-lerna-changelog': require('../package').devDependencies[
-            'release-it-lerna-changelog'
-          ],
-          'release-it-yarn-workspaces': require('../package').devDependencies[
-            'release-it-yarn-workspaces'
-          ],
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: true,
-            },
-            'release-it-yarn-workspaces': true,
-          },
-          git: {
-            tagName: 'v${version}',
-          },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-        },
-      });
 
-      expect(pkg).toEqual(expected);
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^2.3.0",
+            "release-it-yarn-workspaces": "^1.4.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
+              "release-it-yarn-workspaces": true,
+            },
+          },
+          "version": "0.1.0",
+          "workspaces": Array [
+            "packages/*",
+          ],
+        }
+      `);
     });
 
     it('does not remove existing release-it configuration', async function () {
@@ -184,141 +239,137 @@ describe('main binary', function () {
       };
       project.writeSync();
 
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
-      expect(premodificationPackageJSON['release-it']).toEqual({
-        hooks: {
-          'after:bump': 'npm run something',
-        },
-        plugins: {
-          'release-it-lerna-changelog': {
-            launchEditor: false,
-          },
-        },
-        git: {
-          'some-other': 'prop',
-        },
-      });
-
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': require('../package').devDependencies['release-it'],
-          'release-it-lerna-changelog': require('../package').devDependencies[
-            'release-it-lerna-changelog'
-          ],
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          hooks: {
-            'after:bump': 'npm run something',
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^2.3.0",
           },
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: false,
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "some-other": "prop",
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "hooks": Object {
+              "after:bump": "npm run something",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": false,
+              },
             },
           },
-          git: {
-            tagName: 'v${version}',
-            'some-other': 'prop',
-          },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-        },
-      });
-
-      expect(pkg).toEqual(expected);
+          "version": "0.1.0",
+        }
+      `);
     });
 
     it('does not update devDependencies if release-it range is greater', async function () {
       project.addDevDependency('release-it', '^999.999.999');
       project.writeSync();
 
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': '^999.999.999',
-          'release-it-lerna-changelog': require('../package').devDependencies[
-            'release-it-lerna-changelog'
-          ],
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: true,
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^999.999.999",
+            "release-it-lerna-changelog": "^2.3.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
             },
           },
-          git: {
-            tagName: 'v${version}',
-          },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-        },
-      });
-
-      expect(pkg).toEqual(expected);
+          "version": "0.1.0",
+        }
+      `);
     });
 
     it('does not update devDependencies if release-it-lerna-changelog range is greater', async function () {
       project.addDevDependency('release-it-lerna-changelog', '^3.0.0');
       project.writeSync();
 
-      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
-
       await exec(['--no-install', '--no-label-updates']);
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-      let expected = mergePackageJSON(premodificationPackageJSON, {
-        devDependencies: {
-          'release-it': require('../package').devDependencies['release-it'],
-          'release-it-lerna-changelog': '^3.0.0',
-        },
-        publishConfig: {
-          registry: 'https://registry.npmjs.org',
-        },
-        'release-it': {
-          plugins: {
-            'release-it-lerna-changelog': {
-              infile: 'CHANGELOG.md',
-              launchEditor: true,
+
+      expect(pkg).toMatchInlineSnapshot(`
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "release-it": "^13.6.0",
+            "release-it-lerna-changelog": "^3.0.0",
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "release-it-lerna-changelog": Object {
+                "infile": "CHANGELOG.md",
+                "launchEditor": true,
+              },
             },
           },
-          git: {
-            tagName: 'v${version}',
-          },
-          github: {
-            release: true,
-            tokenRef: 'GITHUB_AUTH',
-          },
-        },
-      });
-
-      expect(pkg).toEqual(expected);
+          "version": "0.1.0",
+        }
+      `);
     });
 
-    it('installs dependencies', async function () {
-      await exec(['--no-label-updates']);
+    // skip this test when running locally, it is pretty slow and unlikely to _actually_ matter
+    (process.env.CI ? it : it.skip)(
+      'installs dependencies',
+      async function () {
+        await exec(['--no-label-updates']);
 
-      expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
-      expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
-    }, 15000);
+        expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
+        expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
+      },
+      15000
+    );
   });
 
   describe('RELEASE.md', function () {
@@ -385,17 +436,20 @@ describe('main binary', function () {
 
 describe('unit', function () {
   describe('findRepoURL', function () {
-    [
-      ['https://github.com/rwjblue/foo', 'rwjblue/foo'],
-      ['https://github.com/rwjblue/foo.git', 'rwjblue/foo'],
-      ['https://github.com/rwjblue/foo.js.git', 'rwjblue/foo.js'],
-      ['git@github.com:rwjblue/foo.git', 'rwjblue/foo'],
-      ['git@github.com:rwjblue/foo.js.git', 'rwjblue/foo.js'],
-    ].forEach(([source, expected]) => {
-      it(`${source} -> ${expected}`, function () {
-        expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
-        expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
-      });
+    it.each`
+      source                                     | expected
+      ${'https://github.com/rwjblue/foo'}        | ${'rwjblue/foo'}
+      ${'https://github.com/rwjblue/foo.git'}    | ${'rwjblue/foo'}
+      ${'https://github.com/rwjblue/foo.js.git'} | ${'rwjblue/foo.js'}
+      ${'git@github.com:rwjblue/foo.git'}        | ${'rwjblue/foo'}
+      ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
+      ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
+      ${'rwjblue/foo'}                           | ${'rwjblue/foo'}
+      ${'rwjblue/foo.js'}                        | ${'rwjblue/foo.js'}
+      ${''}                                      | ${undefined}
+    `('$source -> $expected', ({ source, expected }) => {
+      expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
+      expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
     });
   });
 

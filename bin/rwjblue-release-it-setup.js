@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const util = require('util');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
 const getRepoInfoFromURL = require('hosted-git-info').fromUrl;
@@ -10,6 +11,7 @@ const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
 const update = process.argv.includes('--update');
+const gitconfig = util.promisify(require('gitconfiglocal'));
 
 const RELEASE_IT_VERSION = (() => {
   let pkg = require('../package');
@@ -59,7 +61,7 @@ function getDependencyRange(theirs, ours) {
   return ours;
 }
 
-function updatePackageJSON() {
+async function updatePackageJSON() {
   let contents = fs.readFileSync('package.json', { encoding: 'utf8' });
   let trailingWhitespace = DETECT_TRAILING_WHITESPACE.exec(contents);
   let pkg = JSON.parse(contents);
@@ -67,6 +69,24 @@ function updatePackageJSON() {
 
   if (labelsOnly) {
     return pkg;
+  }
+
+  if (!findRepoURL(pkg)) {
+    try {
+      let config = await gitconfig(process.cwd());
+      let originRemoteUrl = config.remote && config.remote.origin && config.remote.origin.url;
+
+      if (originRemoteUrl) {
+        pkg.repository = {
+          type: 'git',
+          url: originRemoteUrl,
+        };
+      }
+    } catch (error) {
+      if (!error.message.includes('no gitconfig to be found')) {
+        throw error;
+      }
+    }
   }
 
   pkg.devDependencies = pkg.devDependencies || {};
@@ -141,7 +161,8 @@ function findRepoURL(pkg) {
     return;
   }
 
-  const url = pkg.repository.url || pkg.repository;
+  // see https://docs.npmjs.com/configuring-npm/package-json#repository for valid formats
+  const url = typeof pkg.repository === 'string' ? pkg.repository : pkg.repository.url;
   const repoInfo = getRepoInfoFromURL(url);
   if (repoInfo === undefined || repoInfo === null || repoInfo.type !== 'github') {
     return;
@@ -160,6 +181,11 @@ async function updateLabels(pkg) {
   let accessToken = process.env.GITHUB_AUTH;
   let labels = require('../labels');
   let repo = findRepoURL(pkg);
+
+  // no repository setup, bail
+  if (!repo) {
+    return;
+  }
 
   await githubLabelSync({
     accessToken,
@@ -214,7 +240,7 @@ async function main() {
       );
     }
 
-    let pkg = updatePackageJSON();
+    let pkg = await updatePackageJSON();
 
     await installDependencies();
 
