@@ -11,7 +11,7 @@ function exec(args) {
   return execa(process.execPath, ['--unhandled-rejections=strict', BIN_PATH, ...args]);
 }
 
-QUnit.module('main binary', function (hooks) {
+describe('main binary', function () {
   let project;
 
   function mergePackageJSON(original, updates) {
@@ -22,40 +22,34 @@ QUnit.module('main binary', function (hooks) {
     });
   }
 
-  hooks.beforeEach(function () {
+  beforeEach(function () {
     project = new Project('some-thing-cool', '0.1.0');
     project.writeSync();
     process.chdir(path.join(project.root, project.name));
   });
 
-  hooks.afterEach(function () {
+  afterEach(function () {
     process.chdir(ROOT);
   });
 
-  QUnit.test('adds CHANGELOG.md file', async function (assert) {
-    assert.notOk(fs.existsSync('CHANGELOG.md'), 'precond - CHANGELOG.md is not present');
+  it('adds CHANGELOG.md file', async function () {
+    expect(fs.existsSync('CHANGELOG.md')).toBeFalsy();
 
     await exec(['--no-install', '--no-label-updates']);
 
-    assert.ok(fs.existsSync('CHANGELOG.md'), 'CHANGELOG.md is present');
+    expect(fs.existsSync('CHANGELOG.md')).toBeTruthy();
   });
 
-  QUnit.skip('removes prefix from existing CHANGELOG.md', async function (assert) {
+  it.skip('removes prefix from existing CHANGELOG.md', async function () {
     project.files['CHANGELOG.md'] = `# master\n\n# v1.2.0\n* Foo bar`;
 
     await exec(['--no-install', '--no-label-updates']);
 
-    assert.strictEqual(
-      fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' }),
-      '# v1.2.0\n* Foo bar',
-      'removes empty prefix from CHANGELOG.md'
-    );
+    expect(fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' })).toBe('# v1.2.0\n* Foo bar');
   });
 
-  QUnit.module('package.json', function () {
-    QUnit.test('adds release-it configuration and devDependencies to package.json', async function (
-      assert
-    ) {
+  describe('package.json', function () {
+    it('adds release-it configuration and devDependencies to package.json', async function () {
       let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
       await exec(['--no-install', '--no-label-updates']);
@@ -88,10 +82,10 @@ QUnit.module('main binary', function (hooks) {
         },
       });
 
-      assert.deepEqual(pkg, expected);
+      expect(pkg).toEqual(expected);
     });
 
-    QUnit.test('adds npm: false when package is marked as private', async function (assert) {
+    it('adds npm: false when package is marked as private', async function () {
       project.pkg.private = true;
       project.writeSync();
 
@@ -128,12 +122,10 @@ QUnit.module('main binary', function (hooks) {
         },
       });
 
-      assert.deepEqual(pkg, expected);
+      expect(pkg).toEqual(expected);
     });
 
-    QUnit.test('adds release-it configuration for monorepos to package.json', async function (
-      assert
-    ) {
+    it('adds release-it configuration for monorepos to package.json', async function () {
       project.pkg.workspaces = ['packages/*'];
       project.writeSync();
 
@@ -173,10 +165,10 @@ QUnit.module('main binary', function (hooks) {
         },
       });
 
-      assert.deepEqual(pkg, expected);
+      expect(pkg).toEqual(expected);
     });
 
-    QUnit.test('does not remove existing release-it configuration', async function (assert) {
+    it('does not remove existing release-it configuration', async function () {
       project.pkg['release-it'] = {
         hooks: {
           'after:bump': 'npm run something',
@@ -194,23 +186,19 @@ QUnit.module('main binary', function (hooks) {
 
       let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
-      assert.deepEqual(
-        premodificationPackageJSON['release-it'],
-        {
-          hooks: {
-            'after:bump': 'npm run something',
-          },
-          plugins: {
-            'release-it-lerna-changelog': {
-              launchEditor: false,
-            },
-          },
-          git: {
-            'some-other': 'prop',
+      expect(premodificationPackageJSON['release-it']).toEqual({
+        hooks: {
+          'after:bump': 'npm run something',
+        },
+        plugins: {
+          'release-it-lerna-changelog': {
+            launchEditor: false,
           },
         },
-        'precond - release-it contents exist initially'
-      );
+        git: {
+          'some-other': 'prop',
+        },
+      });
 
       await exec(['--no-install', '--no-label-updates']);
 
@@ -246,12 +234,10 @@ QUnit.module('main binary', function (hooks) {
         },
       });
 
-      assert.deepEqual(pkg, expected);
+      expect(pkg).toEqual(expected);
     });
 
-    QUnit.test('does not update devDependencies if release-it range is greater', async function (
-      assert
-    ) {
+    it('does not update devDependencies if release-it range is greater', async function () {
       project.addDevDependency('release-it', '^999.999.999');
       project.writeSync();
 
@@ -287,61 +273,55 @@ QUnit.module('main binary', function (hooks) {
         },
       });
 
-      assert.deepEqual(pkg, expected);
+      expect(pkg).toEqual(expected);
     });
 
-    QUnit.test(
-      'does not update devDependencies if release-it-lerna-changelog range is greater',
-      async function (assert) {
-        project.addDevDependency('release-it-lerna-changelog', '^3.0.0');
-        project.writeSync();
+    it('does not update devDependencies if release-it-lerna-changelog range is greater', async function () {
+      project.addDevDependency('release-it-lerna-changelog', '^3.0.0');
+      project.writeSync();
 
-        let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
+      let premodificationPackageJSON = JSON.parse(project.toJSON('package.json'));
 
-        await exec(['--no-install', '--no-label-updates']);
+      await exec(['--no-install', '--no-label-updates']);
 
-        let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
-        let expected = mergePackageJSON(premodificationPackageJSON, {
-          devDependencies: {
-            'release-it': require('../package').devDependencies['release-it'],
-            'release-it-lerna-changelog': '^3.0.0',
-          },
-          publishConfig: {
-            registry: 'https://registry.npmjs.org',
-          },
-          'release-it': {
-            plugins: {
-              'release-it-lerna-changelog': {
-                infile: 'CHANGELOG.md',
-                launchEditor: true,
-              },
-            },
-            git: {
-              tagName: 'v${version}',
-            },
-            github: {
-              release: true,
-              tokenRef: 'GITHUB_AUTH',
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+      let expected = mergePackageJSON(premodificationPackageJSON, {
+        devDependencies: {
+          'release-it': require('../package').devDependencies['release-it'],
+          'release-it-lerna-changelog': '^3.0.0',
+        },
+        publishConfig: {
+          registry: 'https://registry.npmjs.org',
+        },
+        'release-it': {
+          plugins: {
+            'release-it-lerna-changelog': {
+              infile: 'CHANGELOG.md',
+              launchEditor: true,
             },
           },
-        });
+          git: {
+            tagName: 'v${version}',
+          },
+          github: {
+            release: true,
+            tokenRef: 'GITHUB_AUTH',
+          },
+        },
+      });
 
-        assert.deepEqual(pkg, expected);
-      }
-    );
+      expect(pkg).toEqual(expected);
+    });
 
-    QUnit.test('installs dependencies', async function (assert) {
+    it('installs dependencies', async function () {
       await exec(['--no-label-updates']);
 
-      assert.ok(fs.existsSync('node_modules/release-it'), 'release-it installed');
-      assert.ok(
-        fs.existsSync('node_modules/release-it-lerna-changelog'),
-        'release-it-lerna-changelog installed'
-      );
-    });
+      expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
+      expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
+    }, 15000);
   });
 
-  QUnit.module('RELEASE.md', function () {
+  describe('RELEASE.md', function () {
     function expectedReleaseContents(isYarn) {
       let releaseContents = fs.readFileSync(path.join(__dirname, '..', 'release-template.md'), {
         encoding: 'utf8',
@@ -352,67 +332,59 @@ QUnit.module('main binary', function (hooks) {
       return releaseContents.replace('{{INSTALL_DEPENDENCIES}}', dependencyInstallReplacementValue);
     }
 
-    QUnit.test('adds RELEASE.md to repo when no yarn.lock exists', async function (assert) {
-      assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+    it('adds RELEASE.md to repo when no yarn.lock exists', async function () {
+      expect(fs.existsSync('RELEASE.md')).toBeFalsy();
 
       await exec(['--no-install', '--no-label-updates']);
 
-      assert.strictEqual(
-        fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-        expectedReleaseContents(false),
-        'RELEASE.md was created with the correct contents'
+      expect(fs.readFileSync('RELEASE.md', { encoding: 'utf8' })).toBe(
+        expectedReleaseContents(false)
       );
     });
 
-    QUnit.test('adds RELEASE.md to repo when yarn.lock exists', async function (assert) {
+    it('adds RELEASE.md to repo when yarn.lock exists', async function () {
       fs.writeFileSync('yarn.lock', '', { encoding: 'utf-8' });
 
-      assert.notOk(fs.existsSync('RELEASE.md'), 'precond - RELEASE.md is not present');
+      expect(fs.existsSync('RELEASE.md')).toBeFalsy();
 
       await exec(['--no-install', '--no-label-updates']);
 
-      assert.strictEqual(
-        fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-        expectedReleaseContents(true),
-        'RELEASE.md was created with the correct contents'
+      expect(fs.readFileSync('RELEASE.md', { encoding: 'utf8' })).toBe(
+        expectedReleaseContents(true)
       );
     });
 
-    QUnit.module('--update', function (hooks) {
-      hooks.beforeEach(async function () {
+    describe('--update', function () {
+      beforeEach(async function () {
         await exec(['--no-install', '--no-label-updates']);
       });
 
-      QUnit.test('updates RELEASE.md when yarn.lock exists', async function (assert) {
+      it('updates RELEASE.md when yarn.lock exists', async function () {
         fs.writeFileSync('yarn.lock', '', { encoding: 'utf-8' });
         fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
 
         await exec(['--no-install', '--no-label-updates', '--update']);
 
-        assert.strictEqual(
-          fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-          expectedReleaseContents(true),
-          'RELEASE.md has the correct contents'
+        expect(fs.readFileSync('RELEASE.md', { encoding: 'utf8' })).toBe(
+          expectedReleaseContents(true)
         );
       });
 
-      QUnit.test('updates RELEASE.md when no yarn.lock exists', async function (assert) {
+      it('updates RELEASE.md when no yarn.lock exists', async function () {
         fs.writeFileSync('RELEASE.md', 'lololol', 'utf8');
 
         await exec(['--no-install', '--no-label-updates', '--update']);
 
-        assert.strictEqual(
-          fs.readFileSync('RELEASE.md', { encoding: 'utf8' }),
-          expectedReleaseContents(false),
-          'RELEASE.md has the correct contents'
+        expect(fs.readFileSync('RELEASE.md', { encoding: 'utf8' })).toBe(
+          expectedReleaseContents(false)
         );
       });
     });
   });
 });
 
-QUnit.module('unit', function () {
-  QUnit.module('findRepoURL', function () {
+describe('unit', function () {
+  describe('findRepoURL', function () {
     [
       ['https://github.com/rwjblue/foo', 'rwjblue/foo'],
       ['https://github.com/rwjblue/foo.git', 'rwjblue/foo'],
@@ -420,23 +392,22 @@ QUnit.module('unit', function () {
       ['git@github.com:rwjblue/foo.git', 'rwjblue/foo'],
       ['git@github.com:rwjblue/foo.js.git', 'rwjblue/foo.js'],
     ].forEach(([source, expected]) => {
-      QUnit.test(`${source} -> ${expected}`, function (assert) {
-        assert.strictEqual(BinScript.findRepoURL({ repository: source }), expected);
-        assert.strictEqual(BinScript.findRepoURL({ repository: { url: source } }), expected);
+      it(`${source} -> ${expected}`, function () {
+        expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
+        expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
       });
     });
   });
 
-  QUnit.module('getDependencyRange', function () {
-    [
-      { theirs: '1.0.0', ours: '^2.0.0', expected: '^2.0.0' },
-      { theirs: '^3.0.0', ours: '^2.0.0', expected: '^3.0.0' },
-      { theirs: 'github:foo/bar', ours: '^2.0.0', expected: 'github:foo/bar' },
-      { theirs: 'foo/bar', ours: '^2.0.0', expected: 'foo/bar' },
-    ].forEach(({ theirs, ours, expected }) => {
-      QUnit.test(`${theirs},${ours} -> ${expected}`, function (assert) {
-        assert.strictEqual(BinScript.getDependencyRange(theirs, ours), expected);
-      });
+  describe('getDependencyRange', function () {
+    it.each`
+      theirs              | ours        | expected
+      ${'1.0.0'}          | ${'^2.0.0'} | ${'^2.0.0'}
+      ${'^3.0.0'}         | ${'^2.0.0'} | ${'^3.0.0'}
+      ${'github:foo/bar'} | ${'^2.0.0'} | ${'github:foo/bar'}
+      ${'foo/bar'}        | ${'^2.0.0'} | ${'foo/bar'}
+    `('returns $expected given $theirs -> $ours', ({ ours, theirs, expected }) => {
+      expect(BinScript.getDependencyRange(theirs, ours)).toBe(expected);
     });
   });
 });

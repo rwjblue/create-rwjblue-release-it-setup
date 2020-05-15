@@ -14,9 +14,9 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['tests/**/*.js'],
+      files: ['__tests__/**/*.js'],
       env: {
-        qunit: true,
+        jest: true,
       },
     },
   ],
