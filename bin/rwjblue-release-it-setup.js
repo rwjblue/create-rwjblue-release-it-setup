@@ -6,12 +6,14 @@ const util = require('util');
 const execa = require('execa');
 const sortPackageJson = require('sort-package-json');
 const getRepoInfoFromURL = require('hosted-git-info').fromUrl;
+const gitconfig = util.promisify(require('gitconfiglocal'));
 const semver = require('semver');
+const which = require('which');
+
 const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
 const labelsOnly = process.argv.includes('--labels-only');
 const update = process.argv.includes('--update');
-const gitconfig = util.promisify(require('gitconfiglocal'));
 
 const RELEASE_IT_VERSION = (() => {
   let pkg = require('../package');
@@ -32,6 +34,16 @@ const RELEASE_IT_YARN_WORKSPACES_VERSION = (() => {
 })();
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
+
+function hasEditor() {
+  let EDITOR = process.env.EDITOR;
+
+  if (!EDITOR) {
+    EDITOR = which.sync('editor', { nothrow: true });
+  }
+
+  return !!EDITOR;
+}
 
 function getDependencyRange(theirs, ours) {
   if (theirs) {
@@ -113,7 +125,7 @@ async function updatePackageJSON() {
   releaseItConfig.plugins['release-it-lerna-changelog'] = Object.assign(
     {
       infile: 'CHANGELOG.md',
-      launchEditor: true,
+      launchEditor: hasEditor(),
     },
     releaseItConfig.plugins['release-it-lerna-changelog']
   );

@@ -6,6 +6,8 @@ const execa = require('execa');
 
 const BIN_PATH = require.resolve('../bin/rwjblue-release-it-setup');
 const ROOT = process.cwd();
+const EDITOR = 'EDITOR' in process.env ? process.env.EDITOR : null;
+const PATH = process.env.PATH;
 
 function exec(args) {
   return execa(process.execPath, ['--unhandled-rejections=strict', BIN_PATH, ...args]);
@@ -18,10 +20,22 @@ describe('main binary', function () {
     project = new Project('some-thing-cool', '0.1.0');
     project.writeSync();
     process.chdir(path.join(project.root, project.name));
+
+    // ensure an EDITOR is present
+    process.env.EDITOR = '/bin/whatever';
   });
 
   afterEach(function () {
     process.chdir(ROOT);
+
+    // reset process.env.EDITOR to initial state
+    if (EDITOR === null) {
+      delete process.env.EDITOR;
+    } else {
+      process.env.EDITOR = EDITOR;
+    }
+
+    process.env.PATH = PATH;
   });
 
   it('adds CHANGELOG.md file', async function () {
@@ -176,6 +190,20 @@ describe('main binary', function () {
           "version": "0.1.0",
         }
       `);
+    });
+
+    it('does not add launchEditor if no $EDITOR is found', async function () {
+      delete process.env.EDITOR;
+
+      // have to reset $PATH in order to ensure `launchEditor` is false on Ubuntu systems
+      // since they always have a `editor` command
+      process.env.PATH = '';
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+
+      expect(pkg['release-it'].plugins['release-it-lerna-changelog'].launchEditor).toBeFalsy();
     });
 
     it('adds release-it configuration for monorepos to package.json', async function () {
