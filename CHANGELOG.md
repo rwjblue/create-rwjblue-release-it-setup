@@ -1,3 +1,20 @@
+## v2.8.0 (2020-05-15)
+
+#### :rocket: Enhancement
+* [#91](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/91) Avoid setting launchEditor if no $EDITOR is setup. ([@rwjblue](https://github.com/rwjblue))
+* [#90](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/90) Attempt to populate `repository` info from `.git/config` ([@rwjblue](https://github.com/rwjblue))
+* [#87](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/87) Bump release-it from 13.5.8 to 13.6.0 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+* [#86](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/86) Bump github-label-sync from 1.5.0 to 1.6.0 ([@dependabot-preview[bot]](https://github.com/apps/dependabot-preview))
+
+#### :house: Internal
+* [#89](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/89) Tweak CI setup a bit. ([@rwjblue](https://github.com/rwjblue))
+* [#88](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/88) Convert to Jest ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.7.0 (2020-04-28)
 
 #### :rocket: Enhancement
