@@ -161,6 +161,11 @@ async function updateLabels(pkg) {
   let labels = require('../labels');
   let repo = findRepoURL(pkg);
 
+  // no repository setup, bail
+  if (!repo) {
+    return;
+  }
+
   await githubLabelSync({
     accessToken,
     repo,
