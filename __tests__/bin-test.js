@@ -391,12 +391,15 @@ describe('main binary', function () {
 describe('unit', function () {
   describe('findRepoURL', function () {
     it.each`
-      input                                      | expected
+      source                                     | expected
       ${'https://github.com/rwjblue/foo'}        | ${'rwjblue/foo'}
       ${'https://github.com/rwjblue/foo.git'}    | ${'rwjblue/foo'}
       ${'https://github.com/rwjblue/foo.js.git'} | ${'rwjblue/foo.js'}
       ${'git@github.com:rwjblue/foo.git'}        | ${'rwjblue/foo'}
       ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
+      ${'git@github.com:rwjblue/foo.js.git'}     | ${'rwjblue/foo.js'}
+      ${'rwjblue/foo'}                           | ${'rwjblue/foo'}
+      ${'rwjblue/foo.js'}                        | ${'rwjblue/foo.js'}
     `('$source -> $expected', ({ source, expected }) => {
       expect(BinScript.findRepoURL({ repository: source })).toBe(expected);
       expect(BinScript.findRepoURL({ repository: { url: source } })).toBe(expected);
