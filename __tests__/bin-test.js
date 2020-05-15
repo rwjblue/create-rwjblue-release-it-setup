@@ -313,12 +313,17 @@ describe('main binary', function () {
       expect(pkg).toEqual(expected);
     });
 
-    it('installs dependencies', async function () {
-      await exec(['--no-label-updates']);
+    // skip this test when running locally, it is pretty slow and unlikely to _actually_ matter
+    (process.env.CI ? it : it.skip)(
+      'installs dependencies',
+      async function () {
+        await exec(['--no-label-updates']);
 
-      expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
-      expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
-    }, 15000);
+        expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
+        expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
+      },
+      15000
+    );
   });
 
   describe('RELEASE.md', function () {
