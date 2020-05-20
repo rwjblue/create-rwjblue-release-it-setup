@@ -44,7 +44,12 @@ yarn global add release-it
 npm install --global release-it
 ```
 
-* Second, ensure that you have installed your projects dependencies:
+* Second, ensure that you have an environment variable with your GitHub token
+  setup as `GITHUB_AUTH`. This token will be used for generating your changelog
+  (unauthenticated requests to the GitHub API are heavily throttled) and for
+  creating the GitHub release.
+
+* Third, ensure that you have installed your projects dependencies:
 
 ```
 yarn install
