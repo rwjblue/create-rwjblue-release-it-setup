@@ -1,3 +1,12 @@
+## v2.9.0 (2020-05-20)
+
+#### :rocket: Enhancement
+* [#93](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/93) Add information on requiring GITHUB_AUTH to `RELEASE.md`. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.8.0 (2020-05-15)
 
 #### :rocket: Enhancement
