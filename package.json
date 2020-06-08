@@ -22,7 +22,7 @@
   "dependencies": {
     "execa": "^4.0.2",
     "gitconfiglocal": "^2.1.0",
-    "github-label-sync": "^1.6.0",
+    "github-label-sync": "^2.0.0",
     "hosted-git-info": "^3.0.4",
     "semver": "^7.3.2",
     "sort-package-json": "^1.44.0",
