@@ -56,9 +56,11 @@ yarn install
 ```
 
 * And last (but not least 😁) do your release. It requires a
-  [GitHub personal access token](https://github.com/settings/tokens) as
+  [GitHub personal access token][generate-token] as
   `$GITHUB_AUTH` environment variable. Only "repo" access is needed; no "admin"
   or other scopes are required.
+
+[generate-token]: https://github.com/settings/tokens/new?scopes=repo&description=GITHUB_AUTH+env+variable
 
 ```
 export GITHUB_AUTH="f941e0..."
