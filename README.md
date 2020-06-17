@@ -15,14 +15,13 @@ This will do the following:
 ### Prerequisites
 
 1. Obtain a [GitHub personal access token][generate-token].
-2. Make sure the [token is available as the `GITHUB_AUTH` environment variable][export-token].
+2. Make sure the token is available as the `GITHUB_AUTH` environment variable.
   For instance:
   ```bash
   export GITHUB_AUTH=abc123def456
   ```
 
 [generate-token]: https://github.com/settings/tokens/new?scopes=repo&description=GITHUB_AUTH+env+variable
-[export-token]: https://github.com/release-it/release-it/blob/master/docs/environment-variables.md
 
 ### Freshly Configuring a Repo
 
