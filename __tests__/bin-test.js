@@ -463,7 +463,7 @@ describe('main binary', function () {
         expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
         expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
       },
-      15000
+      60000
     );
   });
 
