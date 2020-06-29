@@ -13,6 +13,18 @@ function exec(args) {
   return execa(process.execPath, ['--unhandled-rejections=strict', BIN_PATH, ...args]);
 }
 
+expect.extend({
+  toMatchDevDependency(actual, name) {
+    let pkg = require('../package');
+    let expected = pkg.devDependencies[name];
+
+    return {
+      message: () => `expected ${name} to be specified as \`${expected}\` but was ${actual}`,
+      pass: expected === actual,
+    };
+  },
+});
+
 describe('main binary', function () {
   let project;
 
@@ -80,16 +92,16 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
-            "release-it-lerna-changelog": "^2.3.0",
+            "release-it": toMatchDevDependency<release-it>,
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -129,16 +141,16 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
-            "release-it-lerna-changelog": "^2.3.0",
+            "release-it": toMatchDevDependency<release-it>,
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -177,16 +189,16 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
-            "release-it-lerna-changelog": "^2.3.0",
+            "release-it": toMatchDevDependency<release-it>,
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -241,18 +253,18 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
-            'release-it-yarn-workspaces': BinScript.RELEASE_IT_YARN_WORKSPACES_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            'release-it-yarn-workspaces': expect.toMatchDevDependency('release-it-yarn-workspaces'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
-            "release-it-lerna-changelog": "^2.3.0",
-            "release-it-yarn-workspaces": "^1.4.0",
+            "release-it": toMatchDevDependency<release-it>,
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
+            "release-it-yarn-workspaces": toMatchDevDependency<release-it-yarn-workspaces>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -307,16 +319,16 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
-            "release-it-lerna-changelog": "^2.3.0",
+            "release-it": toMatchDevDependency<release-it>,
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -359,7 +371,7 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
           },
         },
         `
@@ -367,7 +379,7 @@ describe('main binary', function () {
           "dependencies": Object {},
           "devDependencies": Object {
             "release-it": "^999.999.999",
-            "release-it-lerna-changelog": "^2.3.0",
+            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -406,14 +418,14 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it': expect.toMatchDevDependency('release-it'),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
-            "release-it": "^13.6.0",
+            "release-it": toMatchDevDependency<release-it>,
             "release-it-lerna-changelog": "^3.0.0",
           },
           "keywords": Array [],
