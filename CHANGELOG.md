@@ -1,3 +1,21 @@
+## v2.9.1 (2020-06-29)
+
+#### :bug: Bug Fix
+* [#108](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/108) Update generated RELEASE.md guidance. ([@rwjblue](https://github.com/rwjblue))
+
+#### :memo: Documentation
+* [#103](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/103) Update `README.md` and `RELEASE.md` to explain `GITHUB_AUTH` environment variable ([@buschtoens](https://github.com/buschtoens))
+
+#### :house: Internal
+* [#109](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/109) Increase timeout for end-to-end acceptance test. ([@rwjblue](https://github.com/rwjblue))
+* [#106](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/106) Migrate to Jest property matchers to ensure dependabot updates pass. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 3
+- Jan Buschtöns ([@buschtoens](https://github.com/buschtoens))
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.9.0 (2020-05-20)
 
 #### :rocket: Enhancement
