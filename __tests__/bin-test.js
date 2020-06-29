@@ -77,7 +77,14 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -110,7 +117,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     it('adds release-it configuration and devDependencies to package.json', async function () {
@@ -118,7 +126,14 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -147,7 +162,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     it('adds npm: false when package is marked as private', async function () {
@@ -158,7 +174,14 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -189,7 +212,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     it('does not add launchEditor if no $EDITOR is found', async function () {
@@ -214,7 +238,15 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+            'release-it-yarn-workspaces': BinScript.RELEASE_IT_YARN_WORKSPACES_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -248,7 +280,8 @@ describe('main binary', function () {
             "packages/*",
           ],
         }
-      `);
+      `
+      );
     });
 
     it('does not remove existing release-it configuration', async function () {
@@ -271,7 +304,14 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -304,7 +344,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     it('does not update devDependencies if release-it range is greater', async function () {
@@ -315,7 +356,13 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it-lerna-changelog': BinScript.RELEASE_IT_LERNA_CHANGELOG_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -344,7 +391,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     it('does not update devDependencies if release-it-lerna-changelog range is greater', async function () {
@@ -355,7 +403,13 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg).toMatchInlineSnapshot(`
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': BinScript.RELEASE_IT_VERSION,
+          },
+        },
+        `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
@@ -384,7 +438,8 @@ describe('main binary', function () {
           },
           "version": "0.1.0",
         }
-      `);
+      `
+      );
     });
 
     // skip this test when running locally, it is pretty slow and unlikely to _actually_ matter
