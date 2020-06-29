@@ -269,10 +269,6 @@ async function main() {
 module.exports = {
   findRepoURL,
   getDependencyRange,
-
-  RELEASE_IT_VERSION,
-  RELEASE_IT_LERNA_CHANGELOG_VERSION,
-  RELEASE_IT_YARN_WORKSPACES_VERSION,
 };
 
 if (require.main === module) {
