@@ -1,3 +1,10 @@
+## v2.9.2 (2020-07-13)
+
+#### :bug: Bug Fix
+
+* Update `release-it` and `hosted-git-info` dependencies.
+
+
 ## v2.9.1 (2020-06-29)
 
 #### :bug: Bug Fix
