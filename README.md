@@ -8,7 +8,7 @@ This will do the following:
 * install required dependencies,
 * add a `CHANGELOG.md`
 * add a `RELEASE.md`
-* update your repositories labels with my "go to" defaults
+* update your repository's labels with my "go to" defaults
 
 ## Usage
 
