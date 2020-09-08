@@ -1,3 +1,17 @@
+## v2.10.0 (2020-09-08)
+
+#### :rocket: Enhancement
+* [#133](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/133) Update to release-it@14. ([@rwjblue](https://github.com/rwjblue))
+
+#### :memo: Documentation
+* [#123](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/123) Fix misspelling in `README.md` ([@rwwagner90](https://github.com/rwwagner90))
+
+#### Committers: 3
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Robert Wagner ([@rwwagner90](https://github.com/rwwagner90))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.9.2 (2020-07-13)
 
 #### :bug: Bug Fix
