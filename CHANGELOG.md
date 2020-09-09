@@ -1,3 +1,12 @@
+## v2.11.0 (2020-09-09)
+
+#### :rocket: Enhancement
+* [#134](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/134) Tweak release template to pass markdownlint. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v2.10.0 (2020-09-08)
 
 #### :rocket: Enhancement
