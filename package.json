@@ -23,7 +23,7 @@
     "execa": "^4.0.3",
     "gitconfiglocal": "^2.1.0",
     "github-label-sync": "^1.6.0",
-    "hosted-git-info": "^3.0.5",
+    "hosted-git-info": "^3.0.7",
     "semver": "^7.3.2",
     "sort-package-json": "^1.46.0",
     "which": "^2.0.2"
