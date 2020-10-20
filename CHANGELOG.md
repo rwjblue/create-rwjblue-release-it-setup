@@ -1,3 +1,17 @@
+## v3.0.0 (2020-10-20)
+
+#### :boom: Breaking Change
+* [#154](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/154) Update release-it plugins for release-it@14.2.0 support. ([@rwjblue](https://github.com/rwjblue))
+* [#153](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/153) Drop Node 11 and 13 support. ([@rwjblue](https://github.com/rwjblue))
+
+#### :house: Internal
+* [#144](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/144) Swap to volta-cli/action@v1. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 2
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- [@dependabot-preview[bot]](https://github.com/apps/dependabot-preview)
+
+
 ## v2.11.0 (2020-09-09)
 
 #### :rocket: Enhancement
