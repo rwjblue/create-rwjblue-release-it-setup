@@ -1,5 +1,15 @@
 # Changelog
 
+## v3.1.0 (2020-10-30)
+
+#### :rocket: Enhancement
+* [#160](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/160) Update release-it-lerna-changelog to handle headers. ([@rwjblue](https://github.com/rwjblue))
+* [#159](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/159) Add `# Changelog` to top of `CHANGELOG.md` by default. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v3.0.0 (2020-10-20)
 
 #### :boom: Breaking Change
