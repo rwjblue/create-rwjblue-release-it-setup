@@ -58,12 +58,15 @@ describe('main binary', function () {
     expect(fs.existsSync('CHANGELOG.md')).toBeTruthy();
   });
 
-  it.skip('removes prefix from existing CHANGELOG.md', async function () {
-    project.files['CHANGELOG.md'] = `# master\n\n# v1.2.0\n* Foo bar`;
+  it('does not modify if an existing prefix exists in CHANGELOG.md', async function () {
+    project.files['CHANGELOG.md'] = `# ChangeLog\n\n## v1.2.0\n* Foo bar`;
+    project.writeSync();
 
     await exec(['--no-install', '--no-label-updates']);
 
-    expect(fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' })).toBe('# v1.2.0\n* Foo bar');
+    expect(fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' })).toBe(
+      '# ChangeLog\n\n## v1.2.0\n* Foo bar'
+    );
   });
 
   describe('package.json', function () {
@@ -523,6 +526,17 @@ describe('main binary', function () {
 
         expect(fs.readFileSync('RELEASE.md', { encoding: 'utf8' })).toBe(
           expectedReleaseContents(false)
+        );
+      });
+
+      it('adds a basic header in changelog if prefix does not exist in CHANGELOG.md', async function () {
+        project.files['CHANGELOG.md'] = `## v1.2.0\n* Foo bar`;
+        project.writeSync();
+
+        await exec(['--no-install', '--no-label-updates', '--update']);
+
+        expect(fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' })).toBe(
+          '# Changelog\n## v1.2.0\n* Foo bar'
         );
       });
     });

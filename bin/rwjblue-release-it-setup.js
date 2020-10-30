@@ -9,6 +9,7 @@ const getRepoInfoFromURL = require('hosted-git-info').fromUrl;
 const gitconfig = util.promisify(require('gitconfiglocal'));
 const semver = require('semver');
 const which = require('which');
+const parseMarkdown = require('mdast-util-from-markdown');
 
 const skipInstall = process.argv.includes('--no-install');
 const skipLabels = process.argv.includes('--no-label-updates');
@@ -234,8 +235,20 @@ async function main() {
       return;
     }
 
-    if (!fs.existsSync('CHANGELOG.md') && !labelsOnly) {
-      fs.writeFileSync('CHANGELOG.md', '', { encoding: 'utf8' });
+    let hasChangelog = fs.existsSync('CHANGELOG.md');
+    if (!hasChangelog && !labelsOnly) {
+      fs.writeFileSync('CHANGELOG.md', '# Changelog\n', { encoding: 'utf8' });
+    }
+
+    if (hasChangelog && update) {
+      let changelogContent = fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' });
+      let ast = parseMarkdown(changelogContent);
+
+      let hasH1 = ast.children.find((it) => it.type === 'heading' && it.depth === 1);
+
+      if (!hasH1) {
+        fs.writeFileSync('CHANGELOG.md', `# Changelog\n${changelogContent}`, { encoding: 'utf8' });
+      }
     }
 
     if ((!fs.existsSync('RELEASE.md') || update) && !labelsOnly) {
