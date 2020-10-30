@@ -411,7 +411,7 @@ describe('main binary', function () {
     });
 
     it('does not update devDependencies if release-it-lerna-changelog range is greater', async function () {
-      project.addDevDependency('release-it-lerna-changelog', '^3.0.0');
+      project.addDevDependency('release-it-lerna-changelog', '^999999.0.0');
       project.writeSync();
 
       await exec(['--no-install', '--no-label-updates']);
@@ -429,7 +429,7 @@ describe('main binary', function () {
           "dependencies": Object {},
           "devDependencies": Object {
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": "^3.0.0",
+            "release-it-lerna-changelog": "^999999.0.0",
           },
           "keywords": Array [],
           "name": "some-thing-cool",
