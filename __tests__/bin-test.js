@@ -536,7 +536,7 @@ describe('main binary', function () {
         await exec(['--no-install', '--no-label-updates', '--update']);
 
         expect(fs.readFileSync('CHANGELOG.md', { encoding: 'utf8' })).toBe(
-          '# Changelog\n## v1.2.0\n* Foo bar'
+          '# Changelog\n\n## v1.2.0\n* Foo bar'
         );
       });
     });

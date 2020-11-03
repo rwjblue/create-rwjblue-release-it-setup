@@ -247,7 +247,9 @@ async function main() {
       let hasH1 = ast.children.find((it) => it.type === 'heading' && it.depth === 1);
 
       if (!hasH1) {
-        fs.writeFileSync('CHANGELOG.md', `# Changelog\n${changelogContent}`, { encoding: 'utf8' });
+        fs.writeFileSync('CHANGELOG.md', `# Changelog\n\n${changelogContent}`, {
+          encoding: 'utf8',
+        });
       }
     }
 
