@@ -1,5 +1,14 @@
 # Changelog
 
+## v3.1.1 (2020-11-04)
+
+#### :bug: Bug Fix
+* [#164](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/164) Ensure blank line between `# Changelog` and existing content. ([@rwjblue](https://github.com/rwjblue))
+
+#### Committers: 1
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+
+
 ## v3.1.0 (2020-10-30)
 
 #### :rocket: Enhancement
