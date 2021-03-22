@@ -23,7 +23,7 @@
     "execa": "^5.0.0",
     "gitconfiglocal": "^2.1.0",
     "github-label-sync": "^1.6.0",
-    "hosted-git-info": "^3.0.8",
+    "hosted-git-info": "^4.0.1",
     "mdast-util-from-markdown": "^0.8.5",
     "semver": "^7.3.4",
     "sort-package-json": "^1.49.0",
