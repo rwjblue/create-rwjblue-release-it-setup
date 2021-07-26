@@ -34,7 +34,7 @@
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-prettier": "^3.4.0",
-    "fixturify-project": "^2.1.1",
+    "fixturify-project": "^3.0.2",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
     "release-it": "^14.10.1",
