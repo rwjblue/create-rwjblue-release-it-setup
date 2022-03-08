@@ -212,6 +212,10 @@ function isYarn() {
   return fs.existsSync('yarn.lock');
 }
 
+function isPnpm() {
+  return fs.existsSync('pnpm-lock.yaml');
+}
+
 async function installDependencies() {
   if (labelsOnly || skipInstall) {
     return;
@@ -219,6 +223,8 @@ async function installDependencies() {
 
   if (isYarn()) {
     await execa('yarn');
+  } else if (isPnpm()) {
+    await execa('pnpm', ['install']);
   } else {
     await execa('npm', ['install']);
   }
@@ -258,11 +264,17 @@ async function main() {
         encoding: 'utf8',
       });
 
-      let dependencyInstallReplacementValue = isYarn() ? 'yarn install' : 'npm install';
+      let dependencyInstallReplacementValue = `${
+        isYarn() ? 'yarn' : isPnpm() ? 'pnpm' : 'npm'
+      } install`;
+
+      let releaseCommandReplacementValue = isPnpm() ? 'pnpm exec release-it' : 'npx release-it';
 
       fs.writeFileSync(
         'RELEASE.md',
-        releaseContents.replace('{{INSTALL_DEPENDENCIES}}', dependencyInstallReplacementValue),
+        releaseContents
+          .replace('{{INSTALL_DEPENDENCIES}}', dependencyInstallReplacementValue)
+          .replace('{{RELEASE_COMMAND}}', releaseCommandReplacementValue),
         { encoding: 'utf8' }
       );
     }
