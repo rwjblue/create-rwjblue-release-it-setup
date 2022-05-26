@@ -50,7 +50,7 @@ Once the prep work is completed, the actual release is straight forward:
 * And last (but not least 😁) do your release.
 
 ```sh
-npx release-it
+{{RELEASE_COMMAND}}
 ```
 
 [release-it](https://github.com/release-it/release-it/) manages the actual
