@@ -4,11 +4,11 @@ Simple npm init / yarn create bin package to add release-it setup used by rwjblu
 
 This will do the following:
 
-* add `release-it` config to the `package.json`
-* install required dependencies,
-* add a `CHANGELOG.md`
-* add a `RELEASE.md`
-* update your repository's labels with my "go to" defaults
+* Add `release-it` config to the `package.json`
+* Install required dependencies,
+* Add a `CHANGELOG.md`
+* Add a `RELEASE.md`
+* Update your repository's labels with my "go to" defaults
 
 ## Usage
 
