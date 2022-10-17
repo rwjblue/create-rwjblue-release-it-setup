@@ -2916,12 +2916,12 @@ highlight.js@^9.6.0:
   resolved "https://registry.yarnpkg.com/highlight.js/-/highlight.js-9.18.5.tgz#d18a359867f378c138d6819edfc2a8acd5f29825"
   integrity sha512-a5bFyofd/BHCX52/8i8uJkjr9DYwXIPnM/plwI6W7ezItLGqzt7X2G2nXuYSfsIJdkwwj/g9DG1LkcGJI/dDoA==
 
-hosted-git-info@^3.0.8:
-  version "3.0.8"
-  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-3.0.8.tgz#6e35d4cc87af2c5f816e4cb9ce350ba87a3f370d"
-  integrity sha512-aXpmwoOhRBrw6X3j0h5RloK4x1OzsxMPyxqIHyNfSe2pypkVTZFpEiRoSipPEPlMrh0HW/XsjkJ5WgnCirpNUw==
+hosted-git-info@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/hosted-git-info/-/hosted-git-info-6.0.0.tgz#2e9b726a8ac0d68a907c6a8dc4abecac5e0ed69a"
+  integrity sha512-NURrKJX36ihI69iCqcvN4uuIk9fHcc1C+uax/5fPh4Tr5WJnATir+QM/CMJNKrcOOvxQDsAdS5C9oJliM80X7g==
   dependencies:
-    lru-cache "^6.0.0"
+    lru-cache "^7.5.1"
 
 html-encoding-sniffer@^2.0.1:
   version "2.0.1"
@@ -4072,6 +4072,11 @@ lru-cache@^6.0.0:
   integrity sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==
   dependencies:
     yallist "^4.0.0"
+
+lru-cache@^7.5.1:
+  version "7.14.0"
+  resolved "https://registry.yarnpkg.com/lru-cache/-/lru-cache-7.14.0.tgz#21be64954a4680e303a09e9468f880b98a0b3c7f"
+  integrity sha512-EIRtP1GrSJny0dqb50QXRUNBxHJhcpxHC++M5tD7RYbvLLn5KVWKsbyswSSqDuU15UFi3bgTQIY8nhDMeF6aDQ==
 
 macos-release@^2.2.0:
   version "2.3.0"
