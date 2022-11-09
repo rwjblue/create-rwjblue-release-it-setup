@@ -96,15 +96,17 @@ describe('main binary', function () {
         {
           devDependencies: {
             'release-it': expect.toMatchDevDependency('release-it'),
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -120,7 +122,7 @@ describe('main binary', function () {
               "tokenRef": "GITHUB_AUTH",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
@@ -145,15 +147,17 @@ describe('main binary', function () {
         {
           devDependencies: {
             'release-it': expect.toMatchDevDependency('release-it'),
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -169,7 +173,7 @@ describe('main binary', function () {
               "tokenRef": "GITHUB_AUTH",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
@@ -193,15 +197,17 @@ describe('main binary', function () {
         {
           devDependencies: {
             'release-it': expect.toMatchDevDependency('release-it'),
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -219,7 +225,7 @@ describe('main binary', function () {
             },
             "npm": false,
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
@@ -242,7 +248,9 @@ describe('main binary', function () {
 
       let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
 
-      expect(pkg['release-it'].plugins['release-it-lerna-changelog'].launchEditor).toBeFalsy();
+      expect(
+        pkg['release-it'].plugins['@release-it-plugins/lerna-changelog'].launchEditor
+      ).toBeFalsy();
     });
 
     it('adds release-it configuration for monorepos to package.json', async function () {
@@ -257,17 +265,22 @@ describe('main binary', function () {
         {
           devDependencies: {
             'release-it': expect.toMatchDevDependency('release-it'),
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
-            'release-it-yarn-workspaces': expect.toMatchDevDependency('release-it-yarn-workspaces'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
+
+            '@release-it-plugins/workspaces': expect.toMatchDevDependency(
+              '@release-it-plugins/workspaces'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
+            "@release-it-plugins/workspaces": toMatchDevDependency<@release-it-plugins/workspaces>,
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
-            "release-it-yarn-workspaces": toMatchDevDependency<release-it-yarn-workspaces>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -283,11 +296,11 @@ describe('main binary', function () {
               "tokenRef": "GITHUB_AUTH",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
-              "release-it-yarn-workspaces": true,
+              "@release-it-plugins/workspaces": true,
             },
           },
           "version": "0.1.0",
@@ -305,7 +318,7 @@ describe('main binary', function () {
           'after:bump': 'npm run something',
         },
         plugins: {
-          'release-it-lerna-changelog': {
+          '@release-it-plugins/lerna-changelog': {
             launchEditor: false,
           },
         },
@@ -323,15 +336,17 @@ describe('main binary', function () {
         {
           devDependencies: {
             'release-it': expect.toMatchDevDependency('release-it'),
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -351,7 +366,7 @@ describe('main binary', function () {
               "after:bump": "npm run something",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": false,
               },
@@ -374,15 +389,17 @@ describe('main binary', function () {
       expect(pkg).toMatchInlineSnapshot(
         {
           devDependencies: {
-            'release-it-lerna-changelog': expect.toMatchDevDependency('release-it-lerna-changelog'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
           },
         },
         `
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
             "release-it": "^999.999.999",
-            "release-it-lerna-changelog": toMatchDevDependency<release-it-lerna-changelog>,
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -398,7 +415,7 @@ describe('main binary', function () {
               "tokenRef": "GITHUB_AUTH",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
@@ -410,8 +427,8 @@ describe('main binary', function () {
       );
     });
 
-    it('does not update devDependencies if release-it-lerna-changelog range is greater', async function () {
-      project.addDevDependency('release-it-lerna-changelog', '^999999.0.0');
+    it('does not update devDependencies if @release-it-plugins/lerna-changelog range is greater', async function () {
+      project.addDevDependency('@release-it-plugins/lerna-changelog', '^999999.0.0');
       project.writeSync();
 
       await exec(['--no-install', '--no-label-updates']);
@@ -428,8 +445,8 @@ describe('main binary', function () {
         Object {
           "dependencies": Object {},
           "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": "^999999.0.0",
             "release-it": toMatchDevDependency<release-it>,
-            "release-it-lerna-changelog": "^999999.0.0",
           },
           "keywords": Array [],
           "name": "some-thing-cool",
@@ -445,13 +462,149 @@ describe('main binary', function () {
               "tokenRef": "GITHUB_AUTH",
             },
             "plugins": Object {
-              "release-it-lerna-changelog": Object {
+              "@release-it-plugins/lerna-changelog": Object {
                 "infile": "CHANGELOG.md",
                 "launchEditor": true,
               },
             },
           },
           "version": "0.1.0",
+        }
+      `
+      );
+    });
+
+    it('migrates from old plugins to new ones', async function () {
+      project.addDevDependency('release-it-lerna-changelog', '^1.0.0');
+      project.pkg['release-it'] = {
+        plugins: {
+          'release-it-lerna-changelog': {
+            infile: 'RELEASES.md',
+            launchEditor: false,
+          },
+        },
+        git: {
+          'some-other': 'prop',
+        },
+      };
+      project.writeSync();
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': expect.toMatchDevDependency('release-it'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
+          },
+        },
+        `
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
+            "release-it": toMatchDevDependency<release-it>,
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "some-other": "prop",
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "@release-it-plugins/lerna-changelog": Object {
+                "infile": "RELEASES.md",
+                "launchEditor": false,
+              },
+            },
+          },
+          "version": "0.1.0",
+        }
+      `
+      );
+    });
+
+    it('migrates monorepo from old plugins to new ones', async function () {
+      project.pkg.workspaces = ['packages/*'];
+      project.addDevDependency('release-it-lerna-changelog', '^1.0.0');
+      project.addDevDependency('release-it-yarn-workspaces', '^1.0.0');
+      project.pkg['release-it'] = {
+        plugins: {
+          'release-it-lerna-changelog': {
+            infile: 'RELEASES.md',
+            launchEditor: false,
+          },
+          'release-it-yarn-workspaces': true,
+        },
+        git: {
+          'some-other': 'prop',
+        },
+      };
+      project.writeSync();
+
+      await exec(['--no-install', '--no-label-updates']);
+
+      let pkg = JSON.parse(fs.readFileSync('package.json', { encoding: 'utf8' }));
+
+      expect(pkg).toMatchInlineSnapshot(
+        {
+          devDependencies: {
+            'release-it': expect.toMatchDevDependency('release-it'),
+            '@release-it-plugins/lerna-changelog': expect.toMatchDevDependency(
+              '@release-it-plugins/lerna-changelog'
+            ),
+
+            '@release-it-plugins/workspaces': expect.toMatchDevDependency(
+              '@release-it-plugins/workspaces'
+            ),
+          },
+        },
+        `
+        Object {
+          "dependencies": Object {},
+          "devDependencies": Object {
+            "@release-it-plugins/lerna-changelog": toMatchDevDependency<@release-it-plugins/lerna-changelog>,
+            "@release-it-plugins/workspaces": toMatchDevDependency<@release-it-plugins/workspaces>,
+            "release-it": toMatchDevDependency<release-it>,
+          },
+          "keywords": Array [],
+          "name": "some-thing-cool",
+          "publishConfig": Object {
+            "registry": "https://registry.npmjs.org",
+          },
+          "release-it": Object {
+            "git": Object {
+              "some-other": "prop",
+              "tagName": "v\${version}",
+            },
+            "github": Object {
+              "release": true,
+              "tokenRef": "GITHUB_AUTH",
+            },
+            "plugins": Object {
+              "@release-it-plugins/lerna-changelog": Object {
+                "infile": "RELEASES.md",
+                "launchEditor": false,
+              },
+              "@release-it-plugins/workspaces": true,
+            },
+          },
+          "version": "0.1.0",
+          "workspaces": Array [
+            "packages/*",
+          ],
         }
       `
       );
@@ -464,7 +617,7 @@ describe('main binary', function () {
         await exec(['--no-label-updates']);
 
         expect(fs.existsSync('node_modules/release-it')).toBeTruthy();
-        expect(fs.existsSync('node_modules/release-it-lerna-changelog')).toBeTruthy();
+        expect(fs.existsSync('node_modules/@release-it-plugins/lerna-changelog')).toBeTruthy();
       },
       60000
     );

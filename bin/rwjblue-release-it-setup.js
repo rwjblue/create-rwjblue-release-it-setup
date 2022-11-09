@@ -25,13 +25,19 @@ const RELEASE_IT_VERSION = (() => {
 const RELEASE_IT_LERNA_CHANGELOG_VERSION = (() => {
   let pkg = require('../package');
 
-  return pkg.devDependencies['release-it-lerna-changelog'];
+  return (
+    pkg.devDependencies['@release-it-plugins/lerna-changelog'] ||
+    pkg.devDependencies['release-it-lerna-changelog']
+  );
 })();
 
-const RELEASE_IT_YARN_WORKSPACES_VERSION = (() => {
+const RELEASE_IT_WORKSPACES_VERSION = (() => {
   let pkg = require('../package');
 
-  return pkg.devDependencies['release-it-yarn-workspaces'];
+  return (
+    pkg.devDependencies['@release-it-plugins/workspaces'] ||
+    pkg.devDependencies['release-it-yarn-workspaces']
+  );
 })();
 
 const DETECT_TRAILING_WHITESPACE = /\s+$/;
@@ -107,33 +113,42 @@ async function updatePackageJSON() {
     pkg.devDependencies['release-it'],
     RELEASE_IT_VERSION
   );
-  pkg.devDependencies['release-it-lerna-changelog'] = getDependencyRange(
-    pkg.devDependencies['release-it-lerna-changelog'],
+  pkg.devDependencies['@release-it-plugins/lerna-changelog'] = getDependencyRange(
+    pkg.devDependencies['@release-it-plugins/lerna-changelog'],
     RELEASE_IT_LERNA_CHANGELOG_VERSION
   );
+  delete pkg.devDependencies['release-it-lerna-changelog'];
 
   if (hasWorkspaces) {
-    pkg.devDependencies['release-it-yarn-workspaces'] = getDependencyRange(
-      pkg.devDependencies['release-it-yarn-workspaces'],
-      RELEASE_IT_YARN_WORKSPACES_VERSION
+    pkg.devDependencies['@release-it-plugins/workspaces'] = getDependencyRange(
+      pkg.devDependencies['@release-it-plugins/workspaces'],
+      RELEASE_IT_WORKSPACES_VERSION
     );
+    delete pkg.devDependencies['release-it-yarn-workspaces'];
   }
 
   let releaseItConfig = pkg['release-it'] || {};
   pkg['release-it'] = releaseItConfig;
 
   releaseItConfig.plugins = releaseItConfig.plugins || {};
-  releaseItConfig.plugins['release-it-lerna-changelog'] = Object.assign(
+  releaseItConfig.plugins['@release-it-plugins/lerna-changelog'] = Object.assign(
     {
       infile: 'CHANGELOG.md',
       launchEditor: hasEditor(),
     },
+    releaseItConfig.plugins['@release-it-plugins/lerna-changelog'],
     releaseItConfig.plugins['release-it-lerna-changelog']
   );
+  delete releaseItConfig.plugins['release-it-lerna-changelog'];
 
-  if (hasWorkspaces && releaseItConfig.plugins['release-it-yarn-workspaces'] !== false) {
-    releaseItConfig.plugins['release-it-yarn-workspaces'] = true;
+  if (
+    hasWorkspaces &&
+    releaseItConfig.plugins['@release-it-plugins/workspaces'] !== false &&
+    releaseItConfig.plugins['release-it-yarn-workspaces'] !== false
+  ) {
+    releaseItConfig.plugins['@release-it-plugins/workspaces'] = true;
   }
+  delete releaseItConfig.plugins['release-it-yarn-workspaces'];
 
   releaseItConfig.git = Object.assign(
     {
