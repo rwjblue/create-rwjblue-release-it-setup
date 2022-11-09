@@ -42,7 +42,7 @@
     "release-it-yarn-workspaces": "^2.0.1"
   },
   "engines": {
-    "node": "10.* || 12.* || >= 14"
+    "node": "14.* || 16.* || >= 18"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org/"
