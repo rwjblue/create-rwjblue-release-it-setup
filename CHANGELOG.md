@@ -1,5 +1,21 @@
 # Changelog
 
+
+## v4.0.0 (2022-11-09)
+
+#### :boom: Breaking Change
+* [#291](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/291) Drop Node < 14, 15, and 17 support. ([@rwjblue](https://github.com/rwjblue))
+
+#### :rocket: Enhancement
+* [#286](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/286) Update to use new `@release-it-plugins/*` plugins ([@simonihmig](https://github.com/simonihmig))
+* [#254](https://github.com/rwjblue/create-rwjblue-release-it-setup/pull/254) Add pnpm support ([@SergeAstapov](https://github.com/SergeAstapov))
+
+#### Committers: 3
+- Robert Jackson ([@rwjblue](https://github.com/rwjblue))
+- Sergey Astapov ([@SergeAstapov](https://github.com/SergeAstapov))
+- Simon Ihmig ([@simonihmig](https://github.com/simonihmig))
+
+
 ## v3.1.1 (2020-11-04)
 
 #### :bug: Bug Fix
