@@ -24,7 +24,7 @@
     "gitconfiglocal": "^2.1.0",
     "github-label-sync": "^1.6.0",
     "hosted-git-info": "^3.0.8",
-    "mdast-util-from-markdown": "^0.8.5",
+    "mdast-util-from-markdown": "^1.2.0",
     "semver": "^7.3.5",
     "sort-package-json": "^1.50.0",
     "which": "^3.0.0"
