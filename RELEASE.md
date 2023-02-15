@@ -30,9 +30,9 @@ Once the prep work is completed, the actual release is straight forward:
 
 * First, ensure that you have installed your projects dependencies:
 
-```sh
-yarn install
-```
+  ```sh
+  yarn install
+  ```
 
 * Second, ensure that you have obtained a
   [GitHub personal access token][generate-token] with the `repo` scope (no
@@ -49,9 +49,9 @@ yarn install
 
 * And last (but not least 😁) do your release.
 
-```sh
-npx release-it
-```
+  ```sh
+  yarn run release-it
+  ```
 
 [release-it](https://github.com/release-it/release-it/) manages the actual
 release process. It will prompt you to choose the version number after which
